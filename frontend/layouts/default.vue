@@ -1,117 +1,119 @@
 <template>
-  <v-app dark>
+  <v-app id="test">
+    <transition
+      name="view"
+    >
+      <router-view />
+    </transition>
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
+      :clipped="$vuetify.breakpoint.lgAndUp"
       app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+      hidden:true
+    />
     <v-app-bar
-      :clipped-left="clipped"
-      fixed
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
       app
+      dark
+      src="https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77701253455.jpg"
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
+      <v-app-bar-nav-icon id="nav-icon" @click.stop="drawer = !drawer" />
+      <v-toolbar-title
+        style="width: 300px"
+        class="ml-0 pl-4"
       >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
+        <span class="hidden-sm-and-down">Menu</span>
+      </v-toolbar-title>
+      <v-text-field
+        id="searchbar"
+        flat
+        solo
+        hide-details
+        prepend-inner-icon="mdi-magnify"
+        label="Search for artists or music"
+        class="hidden-sm-and-down"
+        rounded=""
+      />
       <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <nuxt-link class="routerLink" to="/register">
+        <v-btn id="Layout-Register-BTN" outlined>
+          <v-icon left>
+            mdi-account-plus
+          </v-icon>
+          Register
+        </v-btn>
+      </nuxt-link>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+      <nuxt-link class="routerLink" to="/resetPassword">
+        <v-btn id="Layout-Login-BTN" outlined>
+          <v-icon left>
+            mdi-login
+          </v-icon>
+          Log-In
+        </v-btn>
+      </nuxt-link>
     </v-app-bar>
-    <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-content>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer
-      :fixed="fixed"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    <v-btn id="scroll-to-top-btn" fab color="pink" @click="scrollToTop">
+      <v-icon>mdi-arrow-up-bold-outline</v-icon>
+    </v-btn>
   </v-app>
 </template>
 
 <script>
+
 export default {
-  data () {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    source: String
+  },
+  data: () => ({
+    dialog: false,
+    drawer: false
+  }),
+  methods: {
+    scrollToTop () {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      })
     }
   }
 }
 </script>
+
+<style>
+.routerLink{
+    text-decoration: none;
+}
+#test{
+  background: url('https://wallpapercave.com/wp/0l0kzYB.jpg');
+}
+#searchbar{
+  color: white;
+}
+.view-enter-active, .view-leave-active{
+  transition: all 0.7s;
+}
+.view-enter-active{
+  transition-delay: 0.7s;
+}
+.view-enter, .view-leave-active{
+  opacity: 0;
+  transform: scale(0);
+}
+#scroll-to-top-btn:hover{
+  color: aqua;
+}
+#scroll-to-top-btn{
+  box-shadow: 0px  0px 40px skyblue;
+}
+#scroll-to-top-btn{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+#Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover{
+  color: aqua;
+}
+</style>
