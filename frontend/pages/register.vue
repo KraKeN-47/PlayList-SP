@@ -10,6 +10,7 @@
       <div id="register-form">
         <v-text-field
           id="username"
+          light
           v-model="username"
           label="Please enter your Username:"
           prepend-icon="mdi-account"
@@ -19,6 +20,7 @@
         />
         <v-text-field
           id="email"
+          light
           v-model="email"
           prepend-icon="mdi-email"
           label="Please enter your E-Mail address"
@@ -27,6 +29,7 @@
         />
         <v-text-field
           id="password"
+          light
           v-model="password"
           label="Please enter your password"
           :type="'password'"
@@ -37,6 +40,7 @@
         />
         <v-text-field
           id="REpassword"
+          light
           v-model="REpassword"
           label="Re-enter your password"
           :type="'password'"
@@ -46,7 +50,7 @@
           solo
         />
         <v-label>Are you an artist?</v-label>
-        <v-checkbox v-model="isArtist" label="Yes" color="teal accent-4" />
+        <v-checkbox v-model="isArtist" label="Yes" color="black" />
         <v-btn :disabled="!valid" @click="signUp">
           Sign Up
         </v-btn>
@@ -108,14 +112,12 @@ export default {
     border-radius: 40px;
     margin: auto;
     margin-top: 170px;
-    box-shadow:0px  15px 40px lightskyblue;
-    background: black;
+    background: rgb(201, 190, 170);
 }
 #register-form{
   margin-top: 35px;
 }
 #username,#email,#password,#REpassword{
-  color: aquamarine;
+  color: black;
 }
-
 </style>

@@ -8,6 +8,7 @@
       <div id="login-form">
         <v-text-field
           id="username"
+          light
           v-model="username"
           label="Username"
           prepend-icon="mdi-account"
@@ -18,6 +19,7 @@
         <v-text-field
           id="password"
           v-model="password"
+          light
           label="Password"
           prepend-icon="mdi-lock-reset"
           solo
@@ -29,9 +31,8 @@
         </v-btn>
 
         <nuxt-link class="routerLink" to="/resetPassword">
-        <v-layout id="forgetpassword"
-            >Forgot your password?
-            
+        <v-layout id="forgetpassword">
+            Forgot your password?
         </v-layout>
         </nuxt-link>
       </div>
@@ -71,8 +72,7 @@ export default {
     border-radius: 40px;
     margin: auto;
     margin-top: 250px;
-    background: black;
-    box-shadow: 0px  15px 40px lightskyblue;
+    background: rgb(201, 190, 170);
 }
 #login-form{
     margin: 45px;

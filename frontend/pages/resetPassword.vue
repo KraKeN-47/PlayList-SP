@@ -7,15 +7,17 @@
     <v-form v-model="valid">
       <div id="resetPass-form">
         <v-text-field
+        light
           id="resetPass1"
           v-model="resetPass"
           label="Please enter your new password"
-          prepend-icon="mdi-account"
+          prepend-icon="mdi-lock-reset"
           :type="'password'"
           solo
           :rules="[comparePasswords(),requiredField('password',''),requiredLength('password',8)]"
         />
         <v-text-field
+        light
           id="resetPass2"
           v-model="reResetPass"
           label="Please re-enter your new password"
@@ -69,8 +71,7 @@ export default {
     border-radius: 40px;
     margin: auto;
     margin-top: 250px;
-    background: black;
-    box-shadow: 0px  15px 40px lightskyblue;
+    background: rgb(201, 190, 170);
 }
 #resetPass-form{
     margin: 45px;
