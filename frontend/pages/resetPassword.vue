@@ -10,7 +10,7 @@
           id="resetPass1"
           v-model="resetPass"
           label="Please enter your new password"
-          prepend-icon="mdi-lock-reset"
+          prepend-icon="mdi-account"
           :type="'password'"
           solo
           :rules="[comparePasswords(),requiredField('password',''),requiredLength('password',8)]"

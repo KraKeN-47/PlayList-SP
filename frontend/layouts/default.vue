@@ -22,8 +22,18 @@
         style="width: 300px"
         class="ml-0 pl-4"
       >
-        <span class="hidden-sm-and-down">Menu</span>
+       <nuxt-link to="/default">
+       <div class="container">
+  <img src="C:\Users\Justas\source\repos\PlayList-SP2\frontend\layouts\img\logo.png" alt="Avatar" class="image">
+  <div class="overlay">
+    <a href="#" class="icon" title="User Profile">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</div>
+       </nuxt-link>
       </v-toolbar-title>
+
       <v-text-field
         id="searchbar"
         flat
@@ -44,7 +54,7 @@
         </v-btn>
       </nuxt-link>
           &nbsp;&nbsp;&nbsp;&nbsp;
-      <nuxt-link class="routerLink" to="/resetPassword">
+      <nuxt-link class="routerLink" to="/login">
         <v-btn id="Layout-Login-BTN" outlined>
           <v-icon left>
             mdi-login
@@ -115,5 +125,30 @@ export default {
 }
 #Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover{
   color: aqua;
+}
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Make the image to responsive */
+.image {
+  width: 100%;
+  height: auto;
+}
+
+/* The overlay effect (full height and width) - lays on top of the container and over the image */
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .3s ease;
+  background-color: red;
 }
 </style>
