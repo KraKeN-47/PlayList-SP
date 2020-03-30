@@ -13,5 +13,6 @@ namespace server.Services
         Task<Post> GetPostByIdAsync(Guid postId);
         Task<bool> UpdatePostAsync(Post postToUpdate);
         Task<bool> DeletePostAsync(Guid postId);
+        Task<bool> UserOwnsPostAsync(Guid postId, string userId);
     }
 }
