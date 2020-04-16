@@ -21,9 +21,9 @@
         style="width: 300px"
         class="ml-0 pl-4"
       >
-      <nuxt-link class="routerLink" to="/">
-        <v-img id="logo" src="https://i.imgur.com/YKhKjkg.png" />
-       </nuxt-link>
+        <nuxt-link class="routerLink" to="/">
+          <v-img id="logo" src="https://i.imgur.com/YKhKjkg.png" />
+        </nuxt-link>
       </v-toolbar-title>
 
       <v-text-field
@@ -38,32 +38,43 @@
         rounded=""
       />
       <v-spacer />
-      <nuxt-link class="routerLink" to="/register">
-        <v-btn id="Layout-Register-BTN" outlined>
-          <v-icon left>
-            mdi-account-plus
-          </v-icon>
-          Register
-        </v-btn>
-      </nuxt-link>
+      <!-- Not Logged In -->
+      <div class="NOTLOGGEDIN">
+        <nuxt-link class="routerLink" to="/register">
+          <v-btn id="Layout-Register-BTN" outlined>
+            <v-icon left>
+              mdi-account-plus
+            </v-icon>
+            Register
+          </v-btn>
+        </nuxt-link>
           &nbsp;&nbsp;&nbsp;&nbsp;
-      <nuxt-link class="routerLink" to="/login">
-        <v-btn id="Layout-Login-BTN" outlined>
+        <nuxt-link class="routerLink" to="/login">
+          <v-btn id="Layout-Login-BTN" outlined>
+            <v-icon left>
+              mdi-login
+            </v-icon>
+            Log-In
+          </v-btn>
+        </nuxt-link>
+      </div>
+      <!-- Logged In -->
+      <div class="LOGGEDIN">
+        <v-btn outlined>
           <v-icon left>
-            mdi-login
+            mdi-logout
           </v-icon>
-          Log-In
+          Log-out
         </v-btn>
-      </nuxt-link>
+      </div>
     </v-app-bar>
-
     <v-btn id="scroll-to-top-btn" fab color="pink" @click="scrollToTop">
       <v-icon>mdi-arrow-up-bold-outline</v-icon>
     </v-btn>
   </v-app>
 </template>
 <script>
-
+// eslint-disable-next-line no-unused-vars
 export default {
   props: {
     // eslint-disable-next-line vue/require-default-prop

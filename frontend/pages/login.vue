@@ -8,8 +8,8 @@
       <div id="login-form">
         <v-text-field
           id="username"
-          light
           v-model="username"
+          light
           label="Username"
           prepend-icon="mdi-account"
           :type="''"
@@ -31,9 +31,9 @@
         </v-btn>
 
         <nuxt-link class="routerLink" to="/resetPassword">
-        <v-layout id="forgetpassword">
+          <v-layout id="forgetpassword">
             Forgot your password?
-        </v-layout>
+          </v-layout>
         </nuxt-link>
       </div>
     </v-form>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 export default {
   data () {
     return {
@@ -55,7 +56,13 @@ export default {
         (field && field.length > 0) || `Please ${re}enter your ${property}.`
     },
     signin () {
-        console.log({ username: this.username, password: this.password})
+      this.$axios.post('https://localhost:5001/api/v1/identity/login', {
+        Email: this.username,
+        Password: this.password
+      }).then((response) => {
+        console.log(response)
+      }).catch(error =>
+        console.log(error))
     }
   }
 }

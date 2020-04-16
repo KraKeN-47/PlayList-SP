@@ -7,9 +7,9 @@
     <v-form v-model="valid">
       <div id="resetPass-form">
         <v-text-field
-        light
           id="resetPass1"
           v-model="resetPass"
+          light
           label="Please enter your new password"
           prepend-icon="mdi-lock-reset"
           :type="'password'"
@@ -17,9 +17,9 @@
           :rules="[comparePasswords(),requiredField('password',''),requiredLength('password',8)]"
         />
         <v-text-field
-        light
           id="resetPass2"
           v-model="reResetPass"
+          light
           label="Please re-enter your new password"
           prepend-icon="mdi-lock-reset"
           solo
