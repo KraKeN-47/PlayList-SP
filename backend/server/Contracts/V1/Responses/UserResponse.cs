@@ -1,8 +1,7 @@
 ﻿namespace server.Contracts.V1.Responses
 {
-    public class AuthSuccessResponse
+    public class UserResponse
     {
-        public string Token { get; set; }
         public string Email { get; set; }
     }
 }

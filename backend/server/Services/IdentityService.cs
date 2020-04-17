@@ -101,7 +101,8 @@ namespace server.Services
             return new AuthenticationResult
             {
                 Success = true,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenHandler.WriteToken(token),
+                Email = user.Email
             };
         }
     }

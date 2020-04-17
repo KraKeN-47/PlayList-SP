@@ -59,9 +59,9 @@ namespace server.Controllers.V1
 
             return Ok(new AuthSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                Email = request.Email
             });
         }
-
     }
 }
