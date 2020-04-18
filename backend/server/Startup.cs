@@ -20,6 +20,14 @@ namespace server
         public void ConfigureServices(IServiceCollection services)
         {
             services.InstallServicesInAssembly(Configuration);
+
+            // <-- Add CORS policy to allow frontend to access the API -->
+            services.AddCors(options =>
+                options.AddPolicy("MyPolicy", builder =>
+                    builder.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod().AllowAnyHeader()
+                    ));
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +57,8 @@ namespace server
             app.UseAuthentication();
 
             app.UseMvc();
+
+            app.UseCors("MyPolicy"); // use created cors policy
         }
     }
 }
