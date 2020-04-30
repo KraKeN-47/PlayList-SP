@@ -1,7 +1,6 @@
 <template>
-  <body />
+  <div />
 </template>
-
 <script>
 export default {
 }

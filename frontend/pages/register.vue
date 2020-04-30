@@ -10,8 +10,8 @@
       <div id="register-form">
         <v-text-field
           id="username"
-          light
           v-model="username"
+          light
           label="Please enter your Username:"
           prepend-icon="mdi-account"
           counter="20"
@@ -20,8 +20,8 @@
         />
         <v-text-field
           id="email"
-          light
           v-model="email"
+          light
           prepend-icon="mdi-email"
           label="Please enter your E-Mail address"
           :rules="[requiredField('Email',''),isEmailValid()]"
@@ -29,8 +29,8 @@
         />
         <v-text-field
           id="password"
-          light
           v-model="password"
+          light
           label="Please enter your password"
           :type="'password'"
           :rules="[requiredField('password',''),requiredLength('password',8)]"
@@ -40,8 +40,8 @@
         />
         <v-text-field
           id="REpassword"
-          light
           v-model="REpassword"
+          light
           label="Re-enter your password"
           :type="'password'"
           prepend-icon="mdi-lock-reset"
@@ -64,6 +64,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-var */
 /* eslint-disable no-unused-vars */
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -99,7 +100,11 @@ export default {
       return (this.password === this.REpassword) || 'Passwords do not match.' // compares if passwords match, else returns an error message.
     },
     signUp () {
-      console.log({ username: this.username, email: this.email, password: this.password, isArtist: this.isArtist }) // logs input data
+      axios.post('https://localhost:5001/api/v1/identity/register', {
+        Email: this.email,
+        Password: this.password
+      }).then(response => console.log(response))
+        .catch(error => console.log(error))
     }
   }
 }

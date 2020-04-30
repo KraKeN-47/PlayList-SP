@@ -8,8 +8,8 @@
       <div id="login-form">
         <v-text-field
           id="username"
-          light
           v-model="username"
+          light
           label="Username"
           prepend-icon="mdi-account"
           :type="''"
@@ -31,9 +31,9 @@
         </v-btn>
 
         <nuxt-link class="routerLink" to="/resetPassword">
-        <v-layout id="forgetpassword">
+          <v-layout id="forgetpassword">
             Forgot your password?
-        </v-layout>
+          </v-layout>
         </nuxt-link>
       </div>
     </v-form>
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -54,8 +56,16 @@ export default {
       return field =>
         (field && field.length > 0) || `Please ${re}enter your ${property}.`
     },
-    signin () {
-        console.log({ username: this.username, password: this.password})
+    ...mapActions({
+      loggedIn: 'login/loginAction'
+    }),
+    signin (store) {
+      this.$auth.loginWith('local', {
+        data: {
+          Email: this.username,
+          Password: this.password
+        }
+      }).then(this.loggedIn(), console.log(`logged state --> ${this.$store.state.login.logged} `)).catch(error => console.log(error))
     }
   }
 }

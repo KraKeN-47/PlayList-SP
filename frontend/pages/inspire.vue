@@ -1,26 +1,37 @@
 <template>
-<div class="test">
-  <v-btn @click="konc"/>
-  <audio controls preload="metadata" style=" width:300px;">
-	<source src="" type="audio/mpeg">
-	Your browser does not support the audio element.
-</audio><br />
-<a href="http://scriptgenerator.net/really-simple-embed-audio-player-script/" style="text-align: right;display: block"></a>
-</div>
+  <div id="kekw">
+    <v-btn>
+      a
+    </v-btn>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, harum. Esse cupiditate est mollitia tempore dolore cumque voluptates optio, laboriosam ratione sapiente magnam dignissimos adipisci quam, ipsam alias eligendi illum, qui commodi non beatae iusto maxime similique. Laboriosam ea dolore beatae ut laborum, minus deleniti odit facilis architecto vero! Hic?</p>
+  </div>
 </template>
 <script>
-  export default{
-    methods:{
-      konc(){
-      const pav= new Audio("http://www.hochmuth.com/mp3/Haydn_Cello_Concerto_D-1.mp3")
-      pav.play();
-      }
-    }
-  }
 </script>
 <style>
-.test{
+#kekw{
   margin: auto;
-
 }
 </style>

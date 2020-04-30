@@ -44,13 +44,30 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'https://localhost:5001/api/v1/identity/login', method: 'post', propertyName: 'token' },
+          logout: false,
+          user: false // { url: 'https://localhost:5001/api/v1/identity/login', method: 'post', propertyName: 'email' }
+        }
+      }
+    },
+    redirect: {
+      home: '/inspire',
+      callback: '/inspire'
+    },
+    tokenTye: ''
   },
   /*
   ** vuetify module configuration
@@ -81,6 +98,13 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
+      config.module.rules.push({
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]'
+        }
+      })
     }
   }
 }

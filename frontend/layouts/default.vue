@@ -10,7 +10,13 @@
       :clipped="$vuetify.breakpoint.lgAndUp"
       app
       hidden:true
-    />
+    >
+      <v-btn width="100%">
+        <nuxt-link class="routerLink" to="/Inspire">
+          Inspire
+        </nuxt-link>
+      </v-btn>
+    </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
       app
@@ -21,9 +27,9 @@
         style="width: 300px"
         class="ml-0 pl-4"
       >
-      <nuxt-link class="routerLink" to="/">
-        <v-img id="logo" src="https://i.imgur.com/YKhKjkg.png" />
-       </nuxt-link>
+        <nuxt-link class="routerLink" to="/">
+          <v-img id="logo" src="https://i.imgur.com/YKhKjkg.png" />
+        </nuxt-link>
       </v-toolbar-title>
 
       <v-text-field
@@ -38,36 +44,52 @@
         rounded=""
       />
       <v-spacer />
-      <nuxt-link class="routerLink" to="/register">
-        <v-btn id="Layout-Register-BTN" outlined>
-          <v-icon left>
-            mdi-account-plus
-          </v-icon>
-          Register
-        </v-btn>
-      </nuxt-link>
+      <!-- Not Logged In -->
+      <div v-if="!$auth.loggedIn" class="NOTLOGGEDIN">
+        <nuxt-link class="routerLink" to="/register">
+          <v-btn id="Layout-Register-BTN" outlined>
+            <v-icon left>
+              mdi-account-plus
+            </v-icon>
+            Register
+          </v-btn>
+        </nuxt-link>
           &nbsp;&nbsp;&nbsp;&nbsp;
-      <nuxt-link class="routerLink" to="/login">
-        <v-btn id="Layout-Login-BTN" outlined>
+        <nuxt-link class="routerLink" to="/login">
+          <v-btn id="Layout-Login-BTN" outlined>
+            <v-icon left>
+              mdi-login
+            </v-icon>
+            Log-In
+          </v-btn>
+        </nuxt-link>
+      </div>
+      <!-- Logged In navbar -->
+      <div v-if="$auth.loggedIn" class="LOGGEDIN">
+        <v-label>
+          Hello, {{ this.$auth.user.email }}
+        </v-label>
+        <v-btn id="Layout-Logout-BTN" outlined :loggedout="true" @click="logout">
           <v-icon left>
-            mdi-login
+            mdi-logout
           </v-icon>
-          Log-In
+          Log-out
         </v-btn>
-      </nuxt-link>
+      </div>
     </v-app-bar>
-
     <v-btn id="scroll-to-top-btn" fab color="pink" @click="scrollToTop">
       <v-icon>mdi-arrow-up-bold-outline</v-icon>
     </v-btn>
+    <music-player v-if="$auth.loggedIn" />
   </v-app>
 </template>
 <script>
-
+import MusicPlayer from '@/components/MusicPlayer.vue'
+// eslint-disable-next-line no-unused-vars
 export default {
-  props: {
-    // eslint-disable-next-line vue/require-default-prop
-    source: String
+  name: 'DefaultTemp',
+  components: {
+    'music-player': MusicPlayer
   },
   data: () => ({
     dialog: false,
@@ -80,6 +102,12 @@ export default {
         left: 0,
         behavior: 'smooth'
       })
+    },
+    logout () {
+      this.$auth.logout()
+      this.$store.commit('login/LOGGED_OUT')
+      console.log(`${this.$store.state.login.logged} -> loggedout`)
+      // window.location.reload(true)
     }
   }
 }
@@ -96,6 +124,7 @@ export default {
 #test{
   background: url('https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1901&q=80.png');
   background-position-y: -150px;
+  background-attachment: fixed;
 }
 #audio{
     position: fixed;
@@ -119,18 +148,16 @@ export default {
   transform: scale(0);
 }
 #scroll-to-top-btn:hover{
-  color: orange;
+  color: black;
+  box-shadow: 0px  0px 20px black;
 }
 #scroll-to-top-btn{
-  box-shadow: 0px  0px 40px orange;
-}
-#scroll-to-top-btn{
+  box-shadow: 0px  0px 20px rgb(255, 194, 159);
   position: fixed;
   bottom: 70px;
   right: 20px;
 }
-#Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover{
-  color: orange;
+#Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover,#Layout-Logout-BTN:hover{
+  color: black;
 }
-
 </style>
