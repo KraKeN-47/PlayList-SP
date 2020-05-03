@@ -59,7 +59,7 @@ export default {
         endpoints: {
           login: { url: 'https://localhost:5001/api/v1/identity/login', method: 'post', propertyName: 'token' },
           logout: false,
-          user: { url: 'https://localhost:5001/api/v1/identity/UserData', method: 'get', propertyName: ['user', 'a'] }
+          user: { url: 'https://localhost:5001/api/v1/identity/UserData', method: 'get', propertyName: 'user' }
         }
       },
       tokenType: 'bearer'
