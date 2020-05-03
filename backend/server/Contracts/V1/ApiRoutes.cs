@@ -24,6 +24,7 @@ namespace server.Contracts.V1
         {
             public const string Login = Base + "/identity/login";
             public const string Register = Base + "/identity/register";
+            public const string UserData = Base + "/identity/UserData";
         }
     }
 }

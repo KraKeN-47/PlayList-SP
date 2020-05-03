@@ -55,10 +55,8 @@ namespace server
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
-            app.UseMvc();
-
             app.UseCors("MyPolicy"); // use created cors policy
+            app.UseMvc();
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using server.Contracts.V1;
@@ -62,6 +66,17 @@ namespace server.Controllers.V1
                 Token = authResponse.Token,
                 Email = request.Email
             });
+        }
+        [HttpGet(ApiRoutes.Identity.UserData)]
+        public async Task<IActionResult> UserData()
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var ReadToken = handler.ReadJwtToken(token);
+            var email = ReadToken.Subject;
+            string test = "a";
+            // return Ok(new User(email));
+            return Ok(new { user = email , a = test });
         }
     }
 }

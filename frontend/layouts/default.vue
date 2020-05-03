@@ -65,9 +65,12 @@
         </nuxt-link>
       </div>
       <!-- Logged In navbar -->
+      <v-btn id="Upload-Music" outlined>
+        <v-icon> mdi-cloud-upload </v-icon>
+      </v-btn>
       <div v-if="$auth.loggedIn" class="LOGGEDIN">
         <v-label>
-          Hello, {{ this.$auth.user.email }}
+          Hello, {{ this.$auth.user }}
         </v-label>
         <v-btn id="Layout-Logout-BTN" outlined :loggedout="true" @click="logout">
           <v-icon left>
@@ -157,7 +160,7 @@ export default {
   bottom: 70px;
   right: 20px;
 }
-#Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover,#Layout-Logout-BTN:hover{
+#Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover,#Layout-Logout-BTN:hover,#Upload-Music:hover{
   color: black;
 }
 </style>
