@@ -7,10 +7,7 @@ namespace server.Contracts.V1.Requests
 {
     public class User
     {
-        string Email { get; set; }
-        public User(string EMAIL)
-        {
-            this.Email = EMAIL;
-        }
+        public string Email { get; set; }
+        public string test { get; set; }
     }
 }
