@@ -75,8 +75,7 @@ namespace server.Controllers.V1
             var ReadToken = handler.ReadJwtToken(token);
             var email = ReadToken.Subject;
             string test = "a";
-            // return Ok(new User(email));
-            return Ok(new { user = email , a = test });
+            return Ok( new { user = new User { Email = email, test = test } });
         }
     }
 }

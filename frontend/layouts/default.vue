@@ -6,10 +6,10 @@
       <router-view />
     </transition>
     <transition>
-      <div class="Volume">
-        <!-- <input v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" id="Audio-Slider" type="range"> -->
+      <!-- <div class="Volume">
+         <input v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" id="Audio-Slider" type="range">
         <v-slider v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" vertical />
-      </div>
+      </div> -->
     </transition>
     <v-navigation-drawer
       v-model="drawer"
@@ -72,10 +72,10 @@
       </div>
       <!-- Logged In navbar -->
       <nuxt-link class="routerLink" to="/upload">
-      <v-btn id="Upload-Music" outlined>
-        <v-icon> mdi-cloud-upload </v-icon>
-      </v-btn>
-         </nuxt-link>
+        <v-btn id="Upload-Music" outlined>
+          <v-icon> mdi-cloud-upload </v-icon>
+        </v-btn>
+      </nuxt-link>
       <div v-if="$auth.loggedIn" class="LOGGEDIN">
         <v-label>
           Hello, {{ this.$auth.user }}
