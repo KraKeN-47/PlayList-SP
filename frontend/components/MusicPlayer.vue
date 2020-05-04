@@ -35,6 +35,11 @@
           mdi-skip-next
         </v-icon>
       </v-btn>
+      <v-btn id="Volume-BTN" fab x-small @click="changeVolumeDisp">
+        <v-icon>
+          mdi-volume-high
+        </v-icon>
+      </v-btn>
       <!-- eslint-disable-next-line vue/valid-v-on -->
       <label id="Time" @timeupdate>
         {{ TimeMinutes }}:{{ TimeSeconds }} / {{ DurationMinutes }}:{{ DurationSeconds }}
@@ -43,6 +48,7 @@
         <div id="volume" />
       </div> -->
     </div>
+    <!-- <input v-show="isVolumeDisp" id="Audio-Slider" type="range"> -->
   </div>
 </template>
 
@@ -107,6 +113,10 @@ export default {
       const durationSeconds = (duration - durationMinutes * 60).toFixed()
       this.DurationMinutes = (durationMinutes >= 10) ? durationMinutes.toString() : '0' + durationMinutes.toString()
       this.DurationSeconds = (durationSeconds >= 10) ? durationSeconds.toString() : '0' + durationSeconds.toString()
+    },
+    changeVolumeDisp () {
+      this.$store.commit('volume/changeVolumeDisp')
+      console.log(this.$store.state.volume.isVolumeDisp)
     }
   }
 }
@@ -137,41 +147,10 @@ export default {
   left: 10%;
   top: 50%;
 }
-/* #player{
-  width: 350px;
-  height: 50px;
-  position: auto;
-  margin: 0 auto;
-  top: 80px;
+#Audio-Slider{
+  -webkit-appearance: slider-vertical;
 }
-#volume {
-position: absolute;
-left: 24px;
-margin: 0 auto;
-height: 5px;
-width: 300px;
-background: #555;
-border-radius: 15px;
+#Volume-BTN{
+  left:100%;
 }
-.ui-slider-range-min {
-height: 5px;
-width: 300px;
-position: absolute;
-background: $primary-color;
-border: none;
-border-radius: 10px;
-outline: none;
-}
-.ui-slider-handle {
-width: 20px;
-height: 20px;
-border-radius: 20px;
-background: #FFF;
-position: absolute;
-margin-left: -8px;
-margin-top: -8px;
-cursor: pointer;
-outline: none;
-}
-} */
 </style>

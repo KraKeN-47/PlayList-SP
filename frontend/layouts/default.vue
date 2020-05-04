@@ -5,6 +5,12 @@
     >
       <router-view />
     </transition>
+    <transition>
+      <div class="Volume">
+        <!-- <input v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" id="Audio-Slider" type="range"> -->
+        <v-slider v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" vertical />
+      </div>
+    </transition>
     <v-navigation-drawer
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
@@ -111,7 +117,7 @@ export default {
     logout () {
       this.$auth.logout()
       this.$store.commit('login/LOGGED_OUT')
-      console.log(`${this.$store.state.login.logged} -> loggedout`)
+      // console.log(`${this.$store.state.login.logged} -> loggedout`)
       // window.location.reload(true)
     }
   }
@@ -164,5 +170,10 @@ export default {
 }
 #Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover,#Layout-Logout-BTN:hover,#Upload-Music:hover{
   color: black;
+}
+.Volume-Slider{
+  position: sticky,fixed;
+  bottom: 8%;
+  left: 59%;
 }
 </style>
