@@ -70,15 +70,13 @@ namespace server.Controllers.V1
         [HttpGet(ApiRoutes.Identity.UserData)]
         public async Task<IActionResult> UserData()
         {
-            string[] attributes = new string[5];
             var handler = new JwtSecurityTokenHandler();
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var ReadToken = handler.ReadJwtToken(token);
             var email = ReadToken.Subject;
             string test = "a";
-            attributes[0] = email;
-            attributes[1] = test;
-            return Ok(new { user = new User { Email = email, test = test } });
+            // return Ok(new User(email));
+            return Ok(new { user = email , a = test });
         }
     }
 }
