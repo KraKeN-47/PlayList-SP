@@ -6,10 +6,10 @@
       <router-view />
     </transition>
     <transition>
-      <div class="Volume">
-        <!-- <input v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" id="Audio-Slider" type="range"> -->
-        <v-slider v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" vertical />
-      </div>
+      <!-- <div class="Volume">
+      <input v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" id="Audio-Slider" type="range">
+      <v-slider v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" vertical />
+      </div> -->
     </transition>
     <v-navigation-drawer
       v-model="drawer"
@@ -71,14 +71,14 @@
         </nuxt-link>
       </div>
       <!-- Logged In navbar -->
-      <nuxt-link class="routerLink" to="/upload">
-      <v-btn id="Upload-Music" outlined>
-        <v-icon> mdi-cloud-upload </v-icon>
-      </v-btn>
-         </nuxt-link>
+      <!-- <nuxt-link class="routerLink" to="/upload">
+        <v-btn id="Upload-Music" outlined>
+          <v-icon> mdi-cloud-upload </v-icon>
+        </v-btn>
+      </nuxt-link> -->
       <div v-if="$auth.loggedIn" class="LOGGEDIN">
         <v-label>
-          Hello, {{ this.$auth.user }}
+          Hello, {{ this.$auth.user.email }}
         </v-label>
         <v-btn id="Layout-Logout-BTN" outlined :loggedout="true" @click="logout">
           <v-icon left>
