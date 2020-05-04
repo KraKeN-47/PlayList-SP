@@ -104,5 +104,6 @@ export default {
 #uploadbtn{
   position: absolute;
   top: 400px;
+
 }
 </style>
