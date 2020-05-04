@@ -7,33 +7,43 @@
       width="600px"
       height="500px"
     >
-      <div id="Upload">
+      <div id="register-form">
         <v-text-field
-          id="Title"
-          v-model="Title"
+          id="title"
+          v-model="title"
           light
-          label="Title"
-          prepend-icon="mdi-comment"
+          label="Please enter song title:"
+          prepend-icon="mdi-text"
           counter="20"
-          :rules="[requiredField('Title','')]"
+          :rules="[requiredField('title','')]"
           solo
         />
         <v-text-field
-          id="Description"
-          v-model="Description"
+          id="description"
+          v-model="description"
           light
-          prepend-icon="mdi-comment"
-          label="Description"
-          :rules="[requiredField('Description','')]"
+          prepend-icon="mdi-text"
+          label="Please enter song description"
+          :rules="[requiredField('description','')]"
           solo
         />
-        <template>
+        <v-text-field
+          id="link"
+          v-model="link"
+          light
+          prepend-icon="mdi-text"
+          label="linkas"
+          :rules="[requiredField('link','')]"
+          solo
+        />
+         <template>
           <div class ="file">
-            <input type="file" @change="onFileSelected">
+          <input type="file" @change="onFileSelected">
           </div>
          
         </template>
-          <v-btn id="uploadbtn" :disabled="!valid" @click="upload">
+
+        <v-btn :disabled="!valid" @click="upload">
           Upload
         </v-btn>
       </div>
@@ -52,32 +62,26 @@ export default {
     return {
       title: '',
       description: '',
-      file: '',
-      valid: true,
-      selectedFile: null
+      link: '',
+      valid: true
     }
   },
   methods: {
-    // validation below
-    onFileSelected(event){
+     onFileSelected(event){
       this.selectedFile = event.target.files[0]
     },
+    // validation below
     requiredField (property, re) { // finds out if field is not empty, else returns an error message.
       return field =>
         (field && field.length > 0) || `Please ${re}enter your ${property}.`
     },
-    requiredLength (property, minLength) { // measures input strings length and compares it with minimum length, else returns an error message.
-      return field =>
-        (field && field.length >= minLength) ||
-          `${property} Must be atleast ${minLength} characters long.`
-    },
-    maxLength (property, maxLength) { // measures input strings length and compares it with maximum length, else returns an error message.
-      return field => (field && field.length <= maxLength || `${property} is too long, max ${maxLength} characters long.`)
-    },
     upload () {
-       title = this.title;
-       description = this.description;
-       file = this.file;
+      axios.post('https://localhost:5001/api/v1/identity/register', {
+        title: this.title,
+        description: this.description,
+        link : this.link,
+      }).then(response => console.log(response))
+        .catch(error => console.log(error))
     }
   }
 }
@@ -86,24 +90,16 @@ export default {
 
  #content{
     width:600px;
-    height: 300px;
+    height: 500px;
     border-radius: 40px;
     margin: auto;
     margin-top: 170px;
     background: rgb(201, 190, 170);
 }
-#file{
-  top:50%;
-}
 #register-form{
   margin-top: 35px;
 }
-#title,#description,#file{
+#title,#description,#password,#REpassword{
   color: black;
-}
-#uploadbtn{
-  position: absolute;
-  top: 400px;
-
 }
 </style>
