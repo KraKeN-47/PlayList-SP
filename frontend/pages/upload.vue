@@ -27,16 +27,13 @@
           :rules="[requiredField('Description','')]"
           solo
         />
-        <v-text-field
-          id="File"
-          v-model="File"
-          light
-          label="File"
-          prepend-icon="mdi-file"
-          counter
-          solo
-        />
-        <v-btn :disabled="!valid" @click="upload">
+        <template>
+          <div class ="file">
+            <input type="file" @change="onFileSelected">
+          </div>
+         
+        </template>
+          <v-btn id="uploadbtn" :disabled="!valid" @click="upload">
           Upload
         </v-btn>
       </div>
@@ -56,11 +53,15 @@ export default {
       title: '',
       description: '',
       file: '',
-      valid: true
+      valid: true,
+      selectedFile: null
     }
   },
   methods: {
     // validation below
+    onFileSelected(event){
+      this.selectedFile = event.target.files[0]
+    },
     requiredField (property, re) { // finds out if field is not empty, else returns an error message.
       return field =>
         (field && field.length > 0) || `Please ${re}enter your ${property}.`
@@ -91,10 +92,18 @@ export default {
     margin-top: 170px;
     background: rgb(201, 190, 170);
 }
+#file{
+  top:50%;
+}
 #register-form{
   margin-top: 35px;
 }
 #title,#description,#file{
   color: black;
+}
+#uploadbtn{
+  position: absolute;
+  top: 400px;
+
 }
 </style>
