@@ -71,9 +71,11 @@
         </nuxt-link>
       </div>
       <!-- Logged In navbar -->
+      <nuxt-link class="routerLink" to="/upload">
       <v-btn id="Upload-Music" outlined>
         <v-icon> mdi-cloud-upload </v-icon>
       </v-btn>
+         </nuxt-link>
       <div v-if="$auth.loggedIn" class="LOGGEDIN">
         <v-label>
           Hello, {{ this.$auth.user }}
