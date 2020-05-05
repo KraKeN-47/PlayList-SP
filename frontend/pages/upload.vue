@@ -1,5 +1,5 @@
 <template>
-  <div id="content" class="container" name="view">
+  <div class="uploadd" name="view">
     <v-form
       ref="submit"
       v-model="valid"
@@ -7,9 +7,9 @@
       width="600px"
       height="500px"
     >
-      <div id="register-form">
+      <div class="upload-form">
         <v-text-field
-          id="title"
+          class="title"
           v-model="title"
           light
           label="Please enter song title:"
@@ -19,7 +19,7 @@
           solo
         />
         <v-text-field
-          id="description"
+          class="description"
           v-model="description"
           light
           prepend-icon="mdi-text"
@@ -28,7 +28,7 @@
           solo
         />
         <v-text-field
-          id="link"
+          class="link"
           v-model="link"
           light
           prepend-icon="mdi-text"
@@ -88,18 +88,18 @@ export default {
 </script>
 <style>
 
- #content{
+ .uploadd{
     width:600px;
-    height: 500px;
+    height: 400px;
     border-radius: 40px;
     margin: auto;
     margin-top: 170px;
     background: rgb(201, 190, 170);
 }
-#register-form{
+.upload-form{
   margin-top: 35px;
 }
-#title,#description,#password,#REpassword{
+.title,.description{
   color: black;
 }
 </style>
