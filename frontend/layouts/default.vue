@@ -5,12 +5,6 @@
     >
       <router-view />
     </transition>
-    <transition>
-      <!-- <div class="Volume">
-         <input v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" id="Audio-Slider" type="range">
-        <v-slider v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp" vertical />
-      </div> -->
-    </transition>
     <v-navigation-drawer
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
@@ -51,7 +45,7 @@
       />
       <v-spacer />
       <!-- Not Logged In -->
-      <div v-if="!$auth.loggedIn" class="NOTLOGGEDIN">
+      <div v-if="!$auth.loggedIn">
         <nuxt-link class="routerLink" to="/register">
           <v-btn id="Layout-Register-BTN" outlined>
             <v-icon left>
@@ -71,17 +65,9 @@
         </nuxt-link>
       </div>
       <!-- Logged In navbar -->
-      <div v-if="$auth.loggedIn" class="LOGGEDIN">
-      <nuxt-link class="routerLink" to="/upload">
-        <v-btn id="Upload-Music" outlined>
-          <v-icon> mdi-cloud-upload </v-icon>
-        </v-btn>
-      </nuxt-link>
-      </div>
-
-      <div v-if="$auth.loggedIn" class="LOGGEDIN">
+      <div v-if="$auth.loggedIn">
         <v-label>
-          Hello, {{ this.$auth.user }}
+          Hello, {{ this.$auth.user.email }}
         </v-label>
         <v-btn id="Layout-Logout-BTN" outlined :loggedout="true" @click="logout">
           <v-icon left>
@@ -89,11 +75,39 @@
           </v-icon>
           Log-out
         </v-btn>
+        <nuxt-link class="routerLink" to="/upload">
+          <v-btn id="Upload-Music" outlined>
+            <v-icon> mdi-cloud-upload </v-icon>
+          </v-btn>
+        </nuxt-link>
       </div>
     </v-app-bar>
-    <v-btn id="scroll-to-top-btn" fab color="pink" @click="scrollToTop">
+    <v-btn class="scroll-to-top-btn" fab color="pink" @click="scrollToTop">
       <v-icon>mdi-arrow-up-bold-outline</v-icon>
     </v-btn>
+    <!-- <input
+      v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp"
+      id="audioslider"
+      class="Audio-Slider"
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      onchange="console.log(audioslider.value)"
+    > -->
+    <v-slider
+      v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp"
+      id="audioSlider"
+      v-model="volume"
+      vertical
+      class="Audio-Slider"
+      min="0"
+      step="0.05"
+      max="1"
+      prepend-icon="mdi-volume-high"
+      thumb-color="black"
+      color="black"
+    />
     <music-player v-if="$auth.loggedIn" />
   </v-app>
 </template>
@@ -107,8 +121,14 @@ export default {
   },
   data: () => ({
     dialog: false,
-    drawer: false
+    drawer: false,
+    volume: 70
   }),
+  watch: {
+    volume (newVal) {
+      this.$store.commit('volume/changeVolume', newVal)
+    }
+  },
   methods: {
     scrollToTop () {
       window.scroll({
@@ -120,8 +140,6 @@ export default {
     logout () {
       this.$auth.logout()
       this.$store.commit('login/LOGGED_OUT')
-      // console.log(`${this.$store.state.login.logged} -> loggedout`)
-      // window.location.reload(true)
     }
   }
 }
@@ -161,11 +179,11 @@ export default {
   opacity: 0;
   transform: scale(0);
 }
-#scroll-to-top-btn:hover{
+.scroll-to-top-btn:hover{
   color: black;
   box-shadow: 0px  0px 20px black;
 }
-#scroll-to-top-btn{
+.scroll-to-top-btn{
   box-shadow: 0px  0px 20px rgb(255, 194, 159);
   position: fixed;
   bottom: 70px;
@@ -174,9 +192,9 @@ export default {
 #Layout-Register-BTN:hover,#Layout-Login-BTN:hover,#nav-icon:hover,#Layout-Logout-BTN:hover,#Upload-Music:hover{
   color: black;
 }
-.Volume-Slider{
-  position: sticky,fixed;
+.Audio-Slider{
+  left: 62.2%;
   bottom: 8%;
-  left: 59%;
+  position: fixed;
 }
 </style>

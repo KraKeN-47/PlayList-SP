@@ -40,15 +40,32 @@
           mdi-volume-high
         </v-icon>
       </v-btn>
+      <div class="Time-Slider-Div">
+        <!-- <input class="Time-Slider" type="range" min="0" max="sound.duration" value="this.$store.state.volume.volume"> -->
+        <v-slider
+          id="TESTINGSLIDER"
+          v-model="currentTime"
+          class="Time-Slider"
+          min="0"
+          :max="duration"
+          value="0"
+        />
+      </div>
       <!-- eslint-disable-next-line vue/valid-v-on -->
-      <label id="Time" @timeupdate>
-        {{ TimeMinutes }}:{{ TimeSeconds }} / {{ DurationMinutes }}:{{ DurationSeconds }}
-      </label>
-      <!-- <div id="player">
-        <div id="volume" />
-      </div> -->
+      <div class="Time-Div">
+        <label @timeupdate>
+          {{ TimeMinutes }}:{{ TimeSeconds }} / {{ DurationMinutes }}:{{ DurationSeconds }}
+        </label>
+      </div>
+      <v-btn depressed small class="Repeat-Btn" @click="repeatSong">
+        <v-icon v-if="repeat===false">
+          mdi-repeat
+        </v-icon>
+        <v-icon v-if="repeat===true">
+          mdi-repeat-once
+        </v-icon>
+      </v-btn>
     </div>
-    <!-- <input v-show="isVolumeDisp" id="Audio-Slider" type="range"> -->
   </div>
 </template>
 
@@ -61,7 +78,22 @@ export default {
       TimeMinutes: '00',
       TimeSeconds: '00',
       DurationMinutes: '00',
-      DurationSeconds: '00'
+      DurationSeconds: '00',
+      repeat: false,
+      currentTime: 0,
+      duration: 0
+    }
+  },
+  computed: {
+    volume () {
+      return this.$store.state.volume.volume
+    }
+  },
+  watch: {
+    volume (newVal) {
+      if (sound) {
+        sound.volume = newVal
+      }
     }
   },
   methods: {
@@ -104,6 +136,9 @@ export default {
       }
     },
     updateTime (sound) {
+      // this.$store.commit('volume/changeCurrentTime', sound.currentTime)
+      this.currentTime = sound.currentTime
+      this.duration = sound.duration
       const timeMinutes = Math.floor(sound.currentTime / 60).toFixed()
       const duration = sound.duration || 0
       const timeSeconds = (sound.currentTime - timeMinutes * 60).toFixed()
@@ -116,41 +151,50 @@ export default {
     },
     changeVolumeDisp () {
       this.$store.commit('volume/changeVolumeDisp')
-      console.log(this.$store.state.volume.isVolumeDisp)
+    },
+    repeatSong () {
+      if (sound) {
+        this.repeat = !this.repeat
+        sound.loop = this.repeat
+      }
     }
   }
 }
 </script>
 
 <style>
- #play-btn,#pause-btn{
-  margin: auto;
-  margin-top: auto;
-  margin-left: auto;
-}
 #music-player-span{
     background: rgb(201, 190, 170);
     width: 100%;
-    height: 7%;
     position: -webkit-sticky;
     position: sticky;
     bottom:0
 }
 #music-player{
-  width: 50%;
+  width: 100%;
   background: transparent;
 }
 #play-btn,#next-song,#previous-song,#pause-btn{
-  left: 50%;
-}
-#Time{
-  left: 10%;
-  top: 50%;
-}
-#Audio-Slider{
-  -webkit-appearance: slider-vertical;
+  left: 20%;
 }
 #Volume-BTN{
-  left:100%;
+  left:50%;
+}
+.Time-Slider-Div{
+  left: 35%;
+  position: absolute;
+  bottom: -10%;
+  width: 20%;
+}
+.Time-Slider{
+  width: 100%;
+}
+.Time-Div{
+  left:55.7%;
+  bottom: 30%;
+  position: absolute;
+}
+.Repeat-Btn{
+  left:50%;
 }
 </style>

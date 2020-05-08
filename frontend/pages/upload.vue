@@ -9,40 +9,27 @@
     >
       <div class="upload-form">
         <v-text-field
-          class="title"
           v-model="title"
+          class="title"
           light
-          label="Please enter song title:"
+          label="Please enter your song title:"
           prepend-icon="mdi-text"
           counter="20"
           :rules="[requiredField('title','')]"
           solo
         />
         <v-text-field
-          class="description"
           v-model="description"
+          class="description"
           light
           prepend-icon="mdi-text"
           label="Please enter song description"
           :rules="[requiredField('description','')]"
           solo
         />
-        <v-text-field
-          class="link"
-          v-model="link"
-          light
-          prepend-icon="mdi-text"
-          label="linkas"
-          :rules="[requiredField('link','')]"
-          solo
-        />
-         <template>
-          <div class ="file">
-          <input type="file" @change="onFileSelected">
-          </div>
-         
-        </template>
-
+        <div class="file" enctype="multipart/form-data">
+          <input type="file" @change="onFileSelected" ref="file">
+        </div>
         <v-btn :disabled="!valid" @click="upload">
           Upload
         </v-btn>
@@ -63,12 +50,15 @@ export default {
       title: '',
       description: '',
       link: '',
-      valid: true
+      valid: true,
+      file: ''
     }
   },
   methods: {
-     onFileSelected(event){
-      this.selectedFile = event.target.files[0]
+    onFileSelected (event) {
+      this.file = event.target.files[0]
+      // this.file = this.$refs.file.files[0]
+      console.log(this.file)
     },
     // validation below
     requiredField (property, re) { // finds out if field is not empty, else returns an error message.
@@ -76,10 +66,13 @@ export default {
         (field && field.length > 0) || `Please ${re}enter your ${property}.`
     },
     upload () {
-      axios.post('https://localhost:5001/api/v1/identity/register', {
+      // const formData = new FormData()
+      // formData.append('file', this.file)
+      // console.log(formData)
+      axios.post('https://localhost:5001/api/v1/upload', {
         title: this.title,
         description: this.description,
-        link : this.link,
+        file: this.file
       }).then(response => console.log(response))
         .catch(error => console.log(error))
     }
