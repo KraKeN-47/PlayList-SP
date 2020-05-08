@@ -102,7 +102,9 @@ export default {
     signUp () {
       axios.post('https://localhost:5001/api/v1/identity/register', {
         Email: this.email,
-        Password: this.password
+        Password: this.password,
+        IsArtist: this.isArtist,
+        UserName: this.username
       }).then(response => console.log(response))
         .catch(error => console.log(error))
     }

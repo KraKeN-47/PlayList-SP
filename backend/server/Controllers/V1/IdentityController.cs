@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using server.Contracts.V1;
 using server.Contracts.V1.Requests;
@@ -32,7 +33,7 @@ namespace server.Controllers.V1
                 });
             }
 
-            var authResponse = await _identityService.RegisterAsync(request.Email, request.Password);
+            var authResponse = await _identityService.RegisterAsync(request);
 
             if (!authResponse.Success)
             {
@@ -64,7 +65,6 @@ namespace server.Controllers.V1
             return Ok(new AuthSuccessResponse
             {
                 Token = authResponse.Token,
-                Email = request.Email
             });
         }
         [HttpGet(ApiRoutes.Identity.UserData)]
@@ -73,9 +73,15 @@ namespace server.Controllers.V1
             var handler = new JwtSecurityTokenHandler();
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var ReadToken = handler.ReadJwtToken(token);
-            var email = ReadToken.Subject;
-            string test = "a";
-            return Ok( new { user = new User { Email = email, test = test } });
+            var userName = ReadToken.Subject;
+            var email = ReadToken.Claims.Where(claim => claim.Type == "email");
+            var isArtist = ReadToken.Claims.Where(claim => claim.Type == "isArtist");
+            return Ok( new { user = new UserResponse { Email = email.ToString(), UserName = userName, IsArtist = bool.Parse(isArtist.ToString()) } });
+        }
+        [HttpPost(ApiRoutes.MusicFile.Upload)]
+        public async Task<IActionResult> UploadFile(IFormFile file, string title, string description)
+        {
+            return Ok(new { file = new { fileName = file.FileName, fileType = file.ContentType , title = title , desc = description} });
         }
     }
 }

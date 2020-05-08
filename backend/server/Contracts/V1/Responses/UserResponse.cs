@@ -3,5 +3,7 @@
     public class UserResponse
     {
         public string Email { get; set; }
+        public bool IsArtist { get; set; }
+        public string UserName { get; set; }
     }
 }

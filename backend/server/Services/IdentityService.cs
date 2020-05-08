@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Expressions;
+using server.Contracts.V1.Requests;
+using server.Contracts.V1.Responses;
 using server.Domain;
 using server.Options;
 
@@ -22,9 +25,9 @@ namespace server.Services
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<AuthenticationResult> RegisterAsync(string email, string password)
+        public async Task<AuthenticationResult> RegisterAsync(UserRegistrationRequest request)
         {
-            var existingUser = await _userManager.FindByEmailAsync(email);
+            var existingUser = await _userManager.FindByEmailAsync(request.Email);
 
             if (existingUser != null)
             {
@@ -36,11 +39,12 @@ namespace server.Services
 
             var newUser = new User
             {
-                Email = email,
-                UserName =  email
+                Email = request.Email,
+                UserName =  request.UserName,
+                IsArtist = request.IsArtist
             };
 
-            var createdUser = await _userManager.CreateAsync(newUser, password);
+            var createdUser = await _userManager.CreateAsync(newUser, request.Password);
 
             if (!createdUser.Succeeded)
             {
@@ -86,10 +90,11 @@ namespace server.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim("id", user.Id)
+                    new Claim("id", user.Id),
+                    new Claim("isArtist", user.IsArtist.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials =
@@ -102,7 +107,9 @@ namespace server.Services
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
-                Email = user.Email
+                Email = user.Email,
+                IsArtist = user.IsArtist,
+                UserName = user.UserName
             };
         }
     }

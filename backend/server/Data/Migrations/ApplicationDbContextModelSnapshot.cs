@@ -205,6 +205,18 @@ namespace server.Data.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("server.Domain.Test", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("kekw");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Test");
+                });
+
             modelBuilder.Entity("server.Domain.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");

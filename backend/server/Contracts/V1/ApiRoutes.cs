@@ -26,5 +26,11 @@ namespace server.Contracts.V1
             public const string Register = Base + "/identity/register";
             public const string UserData = Base + "/identity/UserData";
         }
+
+        public static class MusicFile
+        {
+            public const string Upload = Base + "/upload";
+        }
+
     }
 }
