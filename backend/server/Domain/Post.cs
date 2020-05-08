@@ -15,7 +15,7 @@ namespace server.Domain
         public string Name { get; set; }
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; }
+        public User User { get; set; }
 
     }
 }
