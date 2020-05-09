@@ -5,17 +5,41 @@
     >
       <router-view />
     </transition>
+
     <v-navigation-drawer
+      height="213"
+      light
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
       app
       hidden:true
     >
-      <v-btn width="100%">
-        <nuxt-link class="routerLink" to="/Inspire">
-          Inspire
-        </nuxt-link>
+      <v-btn id="b1"
+      block
+      >
+        MY PLAYLIST
       </v-btn>
+      <v-btn id="b2"
+      block
+      >
+        MY SONGS
+      </v-btn>
+      <v-btn id="b3"
+      block
+      >
+        ARTISTS
+      </v-btn>
+      <v-btn id="b4"
+      block
+      >
+        SETTINGS
+      </v-btn>
+       <v-btn id="b5"
+      block
+      >
+        CLOSE
+      </v-btn>
+
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
@@ -196,5 +220,20 @@ export default {
   left: 62.2%;
   bottom: 8%;
   position: fixed;
+}
+#b1{
+  top: 3%;
+}
+#b2{
+  top: 6%;
+}
+#b3{
+  top: 9%;
+}
+#b4{
+  top: 12%;
+}
+#b5{
+  top: 15%;
 }
 </style>
