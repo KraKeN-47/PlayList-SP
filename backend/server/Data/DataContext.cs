@@ -15,5 +15,8 @@ namespace server.Data
         }
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Music> Music { get; set; }
+        public DbSet<PlayList> PlayList { get; set; }
+        public DbSet<UserPlayList> UserPlayList { get; set; }
     }
 }
