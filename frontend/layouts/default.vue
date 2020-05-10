@@ -7,39 +7,14 @@
     </transition>
 
     <v-navigation-drawer
-      height="213"
-      light
       v-model="drawer"
+      height="21.5%"
+      dark
       :clipped="$vuetify.breakpoint.lgAndUp"
       app
       hidden:true
     >
-      <v-btn id="b1"
-      block
-      >
-        MY PLAYLIST
-      </v-btn>
-      <v-btn id="b2"
-      block
-      >
-        MY SONGS
-      </v-btn>
-      <v-btn id="b3"
-      block
-      >
-        ARTISTS
-      </v-btn>
-      <v-btn id="b4"
-      block
-      >
-        SETTINGS
-      </v-btn>
-       <v-btn id="b5"
-      block
-      >
-        CLOSE
-      </v-btn>
-
+      <nav-bar-options v-if="$auth.loggedIn" :is-artist="this.$auth.user.isArtist" />
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
@@ -91,34 +66,25 @@
       <!-- Logged In navbar -->
       <div v-if="$auth.loggedIn">
         <v-label>
-          Hello, {{ this.$auth.user.email }}
+          Hello, {{ this.$auth.user.userName }}
         </v-label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <nuxt-link class="routerLink" to="/upload">
+          <v-btn v-if="$auth.user.isArtist" id="Upload-Music" outlined>
+            <v-icon> mdi-cloud-upload </v-icon>
+          </v-btn>
+        </nuxt-link>
         <v-btn id="Layout-Logout-BTN" outlined :loggedout="true" @click="logout">
           <v-icon left>
             mdi-logout
           </v-icon>
           Log-out
         </v-btn>
-        <nuxt-link class="routerLink" to="/upload">
-          <v-btn id="Upload-Music" outlined>
-            <v-icon> mdi-cloud-upload </v-icon>
-          </v-btn>
-        </nuxt-link>
       </div>
     </v-app-bar>
     <v-btn class="scroll-to-top-btn" fab color="pink" @click="scrollToTop">
       <v-icon>mdi-arrow-up-bold-outline</v-icon>
     </v-btn>
-    <!-- <input
-      v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp"
-      id="audioslider"
-      class="Audio-Slider"
-      type="range"
-      min="0"
-      max="100"
-      value="50"
-      onchange="console.log(audioslider.value)"
-    > -->
     <v-slider
       v-if="$auth.loggedIn && this.$store.state.volume.isVolumeDisp"
       id="audioSlider"
@@ -137,11 +103,13 @@
 </template>
 <script>
 import MusicPlayer from '@/components/MusicPlayer.vue'
+import NavBarOptions from '@/components/NavBarOptions.vue'
 // eslint-disable-next-line no-unused-vars
 export default {
   name: 'DefaultTemp',
   components: {
-    'music-player': MusicPlayer
+    'music-player': MusicPlayer,
+    'nav-bar-options': NavBarOptions
   },
   data: () => ({
     dialog: false,
@@ -221,19 +189,5 @@ export default {
   bottom: 8%;
   position: fixed;
 }
-#b1{
-  top: 3%;
-}
-#b2{
-  top: 6%;
-}
-#b3{
-  top: 9%;
-}
-#b4{
-  top: 12%;
-}
-#b5{
-  top: 15%;
-}
+
 </style>

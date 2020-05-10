@@ -6,6 +6,7 @@
       class="px-3"
       width="600px"
       height="500px"
+      name="file"
     >
       <div class="upload-form">
         <v-text-field
@@ -27,8 +28,8 @@
           :rules="[requiredField('description','')]"
           solo
         />
-        <div class="file" enctype="multipart/form-data">
-          <input type="file" @change="onFileSelected" ref="file">
+        <div class="file">
+          <input ref="file" type="file" enctype="multipart/form-data" @change="onFileSelected">
         </div>
         <v-btn :disabled="!valid" @click="upload">
           Upload
@@ -45,6 +46,7 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 export default {
+  middleware: 'auth-artist',
   data () {
     return {
       title: '',
@@ -58,7 +60,6 @@ export default {
     onFileSelected (event) {
       this.file = event.target.files[0]
       // this.file = this.$refs.file.files[0]
-      console.log(this.file)
     },
     // validation below
     requiredField (property, re) { // finds out if field is not empty, else returns an error message.
@@ -66,14 +67,16 @@ export default {
         (field && field.length > 0) || `Please ${re}enter your ${property}.`
     },
     upload () {
-      // const formData = new FormData()
-      // formData.append('file', this.file)
-      // console.log(formData)
-      axios.post('https://localhost:5001/api/v1/upload', {
-        title: this.title,
-        description: this.description,
-        file: this.file
-      }).then(response => console.log(response))
+      const formData = new FormData()
+      formData.append('file', this.file)
+      formData.append('description', this.description)
+      formData.append('title', this.title)
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      }
+      axios.post('https://localhost:5001/api/v1/upload', formData, config).then(response => console.log(response), console.log(this.file))
         .catch(error => console.log(error))
     }
   }

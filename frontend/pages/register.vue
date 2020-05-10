@@ -54,6 +54,12 @@
         <v-btn :disabled="!valid" @click="signUp">
           Sign Up
         </v-btn>
+        <v-snackbar v-model="success" color="success" :timeout="4000">
+          Account {{ username }} registered successfully!
+        </v-snackbar>
+        <v-snackbar v-model="failed" color="error" :timeout="4000">
+          {{ errorMsg }} Please try again!
+        </v-snackbar>
       </div>
     </v-form>
   </div>
@@ -79,7 +85,10 @@ export default {
       isArtist: false,
       password: '',
       REpassword: '',
-      valid: true
+      valid: true,
+      success: false,
+      failed: false,
+      errorMsg: String
     }
   },
   methods: {
@@ -99,14 +108,23 @@ export default {
     comparePasswords () {
       return (this.password === this.REpassword) || 'Passwords do not match.' // compares if passwords match, else returns an error message.
     },
-    signUp () {
-      axios.post('https://localhost:5001/api/v1/identity/register', {
-        Email: this.email,
-        Password: this.password,
-        IsArtist: this.isArtist,
-        UserName: this.username
-      }).then(response => console.log(response))
-        .catch(error => console.log(error))
+    async signUp () {
+      try {
+        await axios.post('https://localhost:5001/api/v1/identity/register', {
+          Email: this.email,
+          Password: this.password,
+          IsArtist: this.isArtist,
+          UserName: this.username
+          // eslint-disable-next-line no-return-assign
+        })
+      } catch (error) {
+        console.log(error)
+        this.errorMsg = error.response.data.errors[0]
+        this.failed = true
+      }
+      if (this.failed !== true) {
+        this.success = true
+      }
     }
   }
 }

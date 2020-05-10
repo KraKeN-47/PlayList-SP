@@ -52,13 +52,16 @@ namespace server.Controllers.V1
         [HttpPost(ApiRoutes.Identity.Login)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
-            var authResponse = await _identityService.LoginAsync(request.Email, request.Password);
+            var authResponse = await _identityService.LoginAsync(request.Username, request.Password);
 
             if (!authResponse.Success)
             {
-                return BadRequest(new AuthFailedResponse
+                return BadRequest(new
                 {
-                    Errors = authResponse.Errors
+                    data = new AuthFailedResponse
+                    {
+                        Errors = authResponse.Errors
+                    }
                 });
             }
 
@@ -74,13 +77,18 @@ namespace server.Controllers.V1
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var ReadToken = handler.ReadJwtToken(token);
             var userName = ReadToken.Subject;
-            var email = ReadToken.Claims.Where(claim => claim.Type == "email");
-            var isArtist = ReadToken.Claims.Where(claim => claim.Type == "isArtist");
-            return Ok( new { user = new UserResponse { Email = email.ToString(), UserName = userName, IsArtist = bool.Parse(isArtist.ToString()) } });
+            var email = ReadToken.Claims.Where(claim => claim.Type == "email").Select(Type => Type.Value).SingleOrDefault();
+            var isArtist = ReadToken.Claims.Where(claim => claim.Type == "isArtist").Select(Type => Type.Value).SingleOrDefault();
+            return Ok( new { user = new UserResponse { Email = email.ToString(), UserName = userName , IsArtist = bool.Parse(isArtist.ToString()) } });
         }
+
         [HttpPost(ApiRoutes.MusicFile.Upload)]
-        public async Task<IActionResult> UploadFile(IFormFile file, string title, string description)
+        public async Task<IActionResult> UploadFile(string title, string description, [FromForm(Name = "file")]IFormFile file)
         {
+            if (file == null || !file.ContentType.Equals("audio/mp3") )
+            {
+                return BadRequest();
+            }
             return Ok(new { file = new { fileName = file.FileName, fileType = file.ContentType , title = title , desc = description} });
         }
     }

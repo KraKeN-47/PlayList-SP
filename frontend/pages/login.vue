@@ -62,10 +62,10 @@ export default {
     signin (store) {
       this.$auth.loginWith('local', {
         data: {
-          Email: this.username,
+          Username: this.username,
           Password: this.password
         }
-      }).then(this.loggedIn(), console.log(`logged state --> ${this.$store.state.login.logged} `)).catch(error => console.log(error))
+      }).then(this.loggedIn()).catch(error => console.log(error))
     }
   }
 }

@@ -57,9 +57,9 @@ namespace server.Services
             return GenerateAuthenticationResultForUser(newUser);
         }
 
-        public async Task<AuthenticationResult> LoginAsync(string email, string password)
+        public async Task<AuthenticationResult> LoginAsync(string username, string password)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
