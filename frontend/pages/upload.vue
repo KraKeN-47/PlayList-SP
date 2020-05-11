@@ -34,6 +34,12 @@
         <v-btn :disabled="!valid" @click="upload">
           Upload
         </v-btn>
+        <v-snackbar v-model="success" color="success" :timeout="8000">
+          File uploaded successfully!
+        </v-snackbar>
+        <v-snackbar v-model="failed" color="error" :timeout="8000">
+          {{ errorMsg }}
+        </v-snackbar>
       </div>
     </v-form>
   </div>
@@ -53,20 +59,22 @@ export default {
       description: '',
       link: '',
       valid: true,
-      file: ''
+      file: '',
+      success: false,
+      failed: false,
+      errorMsg: String
     }
   },
   methods: {
     onFileSelected (event) {
       this.file = event.target.files[0]
-      // this.file = this.$refs.file.files[0]
     },
     // validation below
     requiredField (property, re) { // finds out if field is not empty, else returns an error message.
       return field =>
         (field && field.length > 0) || `Please ${re}enter your ${property}.`
     },
-    upload () {
+    async upload () {
       const formData = new FormData()
       formData.append('file', this.file)
       formData.append('description', this.description)
@@ -76,8 +84,15 @@ export default {
           'content-type': 'multipart/form-data'
         }
       }
-      axios.post('https://localhost:5001/api/v1/upload', formData, config).then(response => console.log(response), console.log(this.file))
-        .catch(error => console.log(error))
+      try {
+        await axios.post('https://localhost:5001/api/v1/upload', formData, config)
+      } catch (error) {
+        this.errorMsg = error.response.data.message
+        this.failed = true
+      }
+      if (this.failed !== true) {
+        this.success = true
+      }
     }
   }
 }
