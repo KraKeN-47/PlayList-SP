@@ -7,10 +7,10 @@
       width="600px"
       height="500px"
     >
-      <div id="register-form">
+      <div class="register-form">
         <v-text-field
-          id="username"
           v-model="username"
+          class="username"
           light
           label="Please enter your Username:"
           prepend-icon="mdi-account"
@@ -19,8 +19,8 @@
           solo
         />
         <v-text-field
-          id="email"
           v-model="email"
+          class="email"
           light
           prepend-icon="mdi-email"
           label="Please enter your E-Mail address"
@@ -28,8 +28,8 @@
           solo
         />
         <v-text-field
-          id="password"
           v-model="password"
+          class="password"
           light
           label="Please enter your password"
           :type="'password'"
@@ -39,8 +39,8 @@
           solo
         />
         <v-text-field
-          id="REpassword"
           v-model="REpassword"
+          class="REpassword"
           light
           label="Re-enter your password"
           :type="'password'"
@@ -139,10 +139,10 @@ export default {
     margin-top: 170px;
     background: rgb(201, 190, 170);
 }
-#register-form{
+.register-form{
   margin-top: 35px;
 }
-#username,#email,#password,#REpassword{
+.username,.email,.password,.REpassword{
   color: black;
 }
 </style>

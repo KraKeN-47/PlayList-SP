@@ -11,6 +11,7 @@
         id="play-btn"
         color="indigo"
         fab
+        depressed
         large=""
         :disabled="songs.length === 0"
         @click="playMusic()"
@@ -37,7 +38,7 @@
           mdi-skip-next
         </v-icon>
       </v-btn>
-      <v-btn id="Volume-BTN" fab x-small :disabled="songs.length === 0" @click="changeVolumeDisp">
+      <v-btn id="Volume-BTN" fab depressed x-small :disabled="songs.length === 0" @click="changeVolumeDisp">
         <v-icon>
           mdi-volume-high
         </v-icon>
@@ -261,7 +262,7 @@ export default {
 .PlayList{
   left:55%;
 }
-.v-input__control {
+/* .v-input__control {
   height: 1px;
-}
+} */
 </style>

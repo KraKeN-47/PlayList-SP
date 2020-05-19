@@ -18,7 +18,7 @@
         <nav-bar-options :is-artist="this.$auth.user.isArtist" />
       </div>
       <nuxt-link class="routerLink" to="/music">
-        <v-btn block>
+        <v-btn block @click="getMusic">
           Music
         </v-btn>
       </nuxt-link>
@@ -73,7 +73,7 @@
       <!-- Logged In navbar -->
       <div v-if="$auth.loggedIn">
         <v-label>
-          Hello, {{ this.$auth.user.userName }}
+          Hello, {{ this.$auth.user }}
         </v-label>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <nuxt-link class="routerLink" to="/upload">
@@ -108,7 +108,7 @@
     <div v-if="$auth.loggedIn && this.$store.state.playlist.isPlaylistDisp" class="playlist">
       <ul>
         <li v-for="item in this.$store.state.allplaylistmusic.playlistArr">
-          {{ item.song.name }} &nbsp&nbsp&nbsp
+          {{ item.song.name }} &nbsp;&nbsp;&nbsp;
         </li>
       </ul>
     </div>
@@ -116,6 +116,7 @@
   </v-app>
 </template>
 <script>
+import axios from 'axios'
 import MusicPlayer from '@/components/MusicPlayer.vue'
 import NavBarOptions from '@/components/NavBarOptions.vue'
 // eslint-disable-next-line no-unused-vars
@@ -153,6 +154,14 @@ export default {
       this.$auth.logout()
       this.$store.commit('login/LOGGED_OUT')
       this.$store.commit('allplaylistmusic/LOGGED_OUT')
+    },
+    async getMusic () {
+      try {
+        await axios.get('https://localhost:5001/api/v1/getmusicbyid').then((response) => { let arr = []; arr = response; this.$store.commit('allMusic/addArray', response); console.log(this.$store.state.allMusic.musicArr); console.log(response.musicObj); console.log(arr) })
+        // await axios.get('https://localhost:5001/api/v1/getallmusic', this.ListOfMusic)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

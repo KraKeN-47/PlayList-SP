@@ -15,22 +15,22 @@ export default {
   data () {
     return {
       music: [
-        {
-          song: {
-            title: 'First song title',
-            description: 'First song desc',
-            path: 'C:\\Users\\Dom\\Desktop\\PlayList-SP\\frontend\\assets\\YES.mp3',
-            artist: 'Dom'
-          }
-        },
-        {
-          song: {
-            title: 'Second song title',
-            description: 'Second song desc',
-            path: 'C:\\Users\\Dom\\Desktop\\PlayList-SP\\frontend\\assets\\Astronomical.mp3',
-            artist: 'Domas'
-          }
-        }
+        // {
+        //   song: {
+        //     title: 'First song title',
+        //     description: 'First song desc',
+        //     path: 'C:\\Users\\Dom\\Desktop\\PlayList-SP\\frontend\\assets\\YES.mp3',
+        //     artist: 'Dom'
+        //   }
+        // },
+        // {
+        //   song: {
+        //     title: 'Second song title',
+        //     description: 'Second song desc',
+        //     path: 'C:\\Users\\Dom\\Desktop\\PlayList-SP\\frontend\\assets\\Astronomical.mp3',
+        //     artist: 'Domas'
+        //   }
+        // }
       ]
     }
   }

@@ -15,5 +15,6 @@ namespace server.Contracts.V1.Requests
         public IFormFile File { get; set; }
 
         public string UserName { get; set; }
+        public Guid UserId { get; set; }
     }
 }

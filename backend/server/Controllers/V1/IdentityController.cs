@@ -77,9 +77,10 @@ namespace server.Controllers.V1
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var readToken = handler.ReadJwtToken(token);
             var userName = readToken.Subject;
+            var userId = readToken.Claims.Where(claim => claim.Type == "id").Select(Type => Type.Value).SingleOrDefault();
             var email = readToken.Claims.Where(claim => claim.Type == "email").Select(Type => Type.Value).SingleOrDefault();
             var isArtist = readToken.Claims.Where(claim => claim.Type == "isArtist").Select(Type => Type.Value).SingleOrDefault();
-            return Ok( new { user = new UserResponse { Email = email.ToString(), UserName = userName , IsArtist = bool.Parse(isArtist.ToString()) } });
+            return Ok( new { user = new UserResponse { Email = email.ToString(), UserName = userName , IsArtist = bool.Parse(isArtist.ToString()), Id = Guid.Parse(userId) } });
         }
 
 

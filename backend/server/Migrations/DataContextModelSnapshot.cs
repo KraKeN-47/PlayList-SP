@@ -200,13 +200,9 @@ namespace server.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("UserId");
-
                     b.Property<string>("UserName");
 
                     b.HasKey("MusicId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Music");
                 });
@@ -317,13 +313,6 @@ namespace server.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("server.Domain.Music", b =>
-                {
-                    b.HasOne("server.Domain.User", "User")
-                        .WithMany("Music")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("server.Domain.PlayList", b =>

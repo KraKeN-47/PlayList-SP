@@ -45,11 +45,25 @@ namespace server.Controllers.V1
                 Desc = request.Description,
                 Path = $"{path}/{id.ToString()}.mp3",
                 UserName = request.UserName
+                //UserId = request.UserId
             };
 
             await _uploadService.CreateMusicAsync(music);
 
             return Ok(new UploadMusicResponse(){Message = "Success"});
+        }
+        [HttpGet(ApiRoutes.MusicFile.GetAllMusic)]
+        public async Task<IActionResult> GetAllMusic()
+        {
+            List<Music> allMusicList = await _uploadService.GetAllMusicAsync();
+            return Ok(new { musicList = allMusicList });
+        }
+        [HttpGet(ApiRoutes.MusicFile.GetMusicById)]
+        public async Task<IActionResult> GetMusicById()
+        {
+            List<Music> allMusic = await _uploadService.GetAllMusicAsync();
+            //await _uploadService.DeleteMusicAsync(Guid.Parse("1AF58D49-42B4-4060-94F2-6DDB1E27D7CE"));
+            return Ok(new { musicObj = allMusic });
         }
     }
 }
