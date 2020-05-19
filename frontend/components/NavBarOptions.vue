@@ -6,12 +6,14 @@
     >
       MAIN
     </v-btn>
-    <v-btn
-      id="b1"
-      block
-    >
-      MY PLAYLIST
-    </v-btn>
+    <nuxt-link class="routerLink" to="/myplaylists">
+      <v-btn
+        id="b1"
+        block
+      >
+        MY PLAYLISTS
+      </v-btn>
+    </nuxt-link>
     <v-btn
       v-if="isArtist"
       id="b2"

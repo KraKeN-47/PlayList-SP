@@ -1,7 +1,7 @@
 <template>
   <div id="music-player-span" class="music-span">
     <div id="music-player">
-      <v-btn id="previous-song" rounded="" @click="previousSong">
+      <v-btn id="previous-song" rounded="" :disabled="songs.length === 0" @click="previousSong">
         <v-icon>
           mdi-skip-previous
         </v-icon>
@@ -12,6 +12,7 @@
         color="indigo"
         fab
         large=""
+        :disabled="songs.length === 0"
         @click="playMusic()"
       >
         <v-icon>
@@ -24,23 +25,24 @@
         color="indigo"
         fab
         large=""
+        :disabled="songs.length === 0"
         @click="pauseMusic()"
       >
         <v-icon>
           mdi-pause
         </v-icon>
       </v-btn>
-      <v-btn id="next-song" rounded="" @click="nextSong">
+      <v-btn id="next-song" rounded="" :disabled="songs.length === 0" @click="nextSong">
         <v-icon>
           mdi-skip-next
         </v-icon>
       </v-btn>
-      <v-btn id="Volume-BTN" fab x-small @click="changeVolumeDisp">
+      <v-btn id="Volume-BTN" fab x-small :disabled="songs.length === 0" @click="changeVolumeDisp">
         <v-icon>
           mdi-volume-high
         </v-icon>
       </v-btn>
-      <div class="Time-Slider-Div">
+      <div class="Time-Slider-Div" :disabled="songs.length === 0">
         <v-slider
           id="TESTINGSLIDER"
           v-model="currentTime"
@@ -48,22 +50,28 @@
           min="0"
           :max="duration"
           value="0"
-          @end="test"
+          @end="setTime"
         />
       </div>
+      <v-snackbar v-if="songs.length === 0 ? testas = true : testas = false" v-model="testas" color="success" :timeout="10000">
+        In order to use the music player, you must load the playlist first from your Playlist page
+      </v-snackbar>
       <!-- eslint-disable-next-line vue/valid-v-on -->
       <div class="Time-Div">
         <label @timeupdate>
           {{ TimeMinutes }}:{{ TimeSeconds }} / {{ DurationMinutes }}:{{ DurationSeconds }}
         </label>
       </div>
-      <v-btn depressed small class="Repeat-Btn" @click="repeatSong">
+      <v-btn depressed small class="Repeat-Btn" :disabled="songs.length === 0" @click="repeatSong">
         <v-icon v-if="repeat===false">
           mdi-repeat
         </v-icon>
         <v-icon v-if="repeat===true">
           mdi-repeat-once
         </v-icon>
+      </v-btn>
+      <v-btn depressed small class="PlayList" :disabled="songs.length === 0" @click="changePlayListDisp">
+        PlayList
       </v-btn>
     </div>
   </div>
@@ -82,17 +90,22 @@ export default {
       repeat: false,
       currentTime: 0,
       duration: 0,
-      songs: [
-        { path: require('assets/YES.mp3') },
-        { path: require('assets/Astronomical.mp3') },
-        { path: require('assets/dd576edb-64ae-4554-8ba4-33ec09e5773f.mp3') }
-      ],
+      test: false,
+      // songs: [
+      //   { path: require('assets/YES.mp3') },
+      //   { path: require('assets/Astronomical.mp3') },
+      //   { path: require('assets/dd576edb-64ae-4554-8ba4-33ec09e5773f.mp3') }
+      // ],
+      // songs: this.$store.state.allplaylistmusic.playlistArr,
       currentSong: null
     }
   },
   computed: {
     volume () {
       return this.$store.state.volume.volume
+    },
+    songs () {
+      return this.$store.state.allplaylistmusic.playlistArr
     }
   },
   watch: {
@@ -105,10 +118,13 @@ export default {
       const index = this.songs.indexOf(this.currentSong)
       if (newVal === this.duration && index !== (this.songs.length - 1)) {
         this.nextSong()
-      } else if (index === this.songs.length - 1 && newVal === this.duration) {
+      } else if (index === this.songs.length - 1 && newVal === this.duration && this.repeat === false) {
         this.nextSong()
         this.pauseMusic()
       }
+    },
+    songs (newVal) {
+      // console.log(newVal)
     }
   },
   methods: {
@@ -117,7 +133,7 @@ export default {
         sound = new Audio(song.path)
       }
       this.isPlaying = true
-      sound = new Audio(song.path)
+      sound = new Audio(song.song.path)
       this.currentSong = song
       // const index = this.songs.indexOf(this.currentSong)
       sound.play()
@@ -190,14 +206,16 @@ export default {
     changeVolumeDisp () {
       this.$store.commit('volume/changeVolumeDisp')
     },
+    changePlayListDisp () {
+      this.$store.commit('playlist/changePlaylistDisp')
+    },
     repeatSong () {
       if (sound) {
         this.repeat = !this.repeat
         sound.loop = this.repeat
       }
     },
-    test (newVal) {
-      // console.log(newVal)
+    setTime (newVal) {
       sound.currentTime = newVal
     }
   }
@@ -210,7 +228,7 @@ export default {
     width: 100%;
     position: -webkit-sticky;
     position: sticky;
-    bottom:0
+    bottom: 0;
 }
 #music-player{
   width: 100%;
@@ -225,8 +243,9 @@ export default {
 .Time-Slider-Div{
   left: 35%;
   position: absolute;
-  bottom: -10%;
+  bottom: 25%;
   width: 20%;
+  height: 50%;
 }
 .Time-Slider{
   width: 100%;
@@ -238,5 +257,11 @@ export default {
 }
 .Repeat-Btn{
   left:50%;
+}
+.PlayList{
+  left:55%;
+}
+.v-input__control {
+  height: 1px;
 }
 </style>

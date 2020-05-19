@@ -105,6 +105,13 @@
       thumb-color="black"
       color="black"
     />
+    <div v-if="$auth.loggedIn && this.$store.state.playlist.isPlaylistDisp" class="playlist">
+      <ul>
+        <li v-for="item in this.$store.state.allplaylistmusic.playlistArr">
+          {{ item.song.name }} &nbsp&nbsp&nbsp
+        </li>
+      </ul>
+    </div>
     <music-player v-if="$auth.loggedIn" />
   </v-app>
 </template>
@@ -123,10 +130,16 @@ export default {
     drawer: false,
     volume: 70
   }),
+  computed: {
+    songs () {
+      return this.$store.state.allplaylistmusic.playlistArr
+    }
+  },
   watch: {
     volume (newVal) {
       this.$store.commit('volume/changeVolume', newVal)
-    }
+    },
+    songs () {}
   },
   methods: {
     scrollToTop () {
@@ -139,6 +152,7 @@ export default {
     logout () {
       this.$auth.logout()
       this.$store.commit('login/LOGGED_OUT')
+      this.$store.commit('allplaylistmusic/LOGGED_OUT')
     }
   }
 }
@@ -196,5 +210,10 @@ export default {
   bottom: 8%;
   position: fixed;
 }
-
+.playlist{
+  left: 72%;
+  bottom: 8%;
+  position: fixed;
+  background: black;
+}
 </style>

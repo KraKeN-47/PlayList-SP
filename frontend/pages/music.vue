@@ -2,7 +2,9 @@
   <div class="container">
     <ul>
       <li v-for="item in music">
-        {{ item.song.title }} <v-spacer />  {{ item.song.description }}  <v-spacer />   {{ item.song.artist }}
+        {{ item.song.title }}
+        {{ item.song.description }}
+        {{ item.song.artist }}
       </li>
     </ul>
   </div>
