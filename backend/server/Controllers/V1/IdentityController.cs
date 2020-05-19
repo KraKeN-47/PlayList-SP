@@ -92,14 +92,12 @@ namespace server.Controllers.V1
         [HttpPost(ApiRoutes.MusicFile.Upload)]
         public async Task<IActionResult> UploadFile(string title, string description, [FromForm(Name = "file")]IFormFile file)
         {
-            if (file == null || !file.ContentType.Equals("audio/mp3") )
+            if (file == null || !file.ContentType.Equals("audio/mpeg") )
             {
                 return BadRequest(new { message = "File has an incorrect type, please try again!" });
             }
 
             var path = Path.GetFullPath("../../frontend/assets");
-            var upload = Path.Combine(path);
-            Random r = new Random();
             var id = Guid.NewGuid();
             using (var fs = new FileStream(Path.Combine(path, $"{id}.mp3"), FileMode.Create))
             {

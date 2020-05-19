@@ -14,7 +14,14 @@
       app
       hidden:true
     >
-      <nav-bar-options v-if="$auth.loggedIn" :is-artist="this.$auth.user.isArtist" />
+      <div v-if="$auth.loggedIn === true">
+        <nav-bar-options :is-artist="this.$auth.user.isArtist" />
+      </div>
+      <nuxt-link class="routerLink" to="/music">
+        <v-btn block>
+          Music
+        </v-btn>
+      </nuxt-link>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"

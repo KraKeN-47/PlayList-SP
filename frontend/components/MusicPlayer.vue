@@ -41,7 +41,6 @@
         </v-icon>
       </v-btn>
       <div class="Time-Slider-Div">
-        <!-- <input class="Time-Slider" type="range" min="0" max="sound.duration" value="this.$store.state.volume.volume"> -->
         <v-slider
           id="TESTINGSLIDER"
           v-model="currentTime"
@@ -49,6 +48,7 @@
           min="0"
           :max="duration"
           value="0"
+          @end="test"
         />
       </div>
       <!-- eslint-disable-next-line vue/valid-v-on -->
@@ -81,7 +81,13 @@ export default {
       DurationSeconds: '00',
       repeat: false,
       currentTime: 0,
-      duration: 0
+      duration: 0,
+      songs: [
+        { path: require('assets/YES.mp3') },
+        { path: require('assets/Astronomical.mp3') },
+        { path: require('assets/dd576edb-64ae-4554-8ba4-33ec09e5773f.mp3') }
+      ],
+      currentSong: null
     }
   },
   computed: {
@@ -94,22 +100,44 @@ export default {
       if (sound) {
         sound.volume = newVal
       }
+    },
+    currentTime (newVal) {
+      const index = this.songs.indexOf(this.currentSong)
+      if (newVal === this.duration && index !== (this.songs.length - 1)) {
+        this.nextSong()
+      } else if (index === this.songs.length - 1 && newVal === this.duration) {
+        this.nextSong()
+        this.pauseMusic()
+      }
     }
   },
   methods: {
-    playMusic () {
+    playSong (song, isPaused) {
       if (!sound) {
-        sound = new Audio(require('assets/YES.mp3'))
+        sound = new Audio(song.path)
       }
       this.isPlaying = true
+      sound = new Audio(song.path)
+      this.currentSong = song
+      // const index = this.songs.indexOf(this.currentSong)
       sound.play()
       sound.addEventListener('timeupdate', (update) => {
         this.updateTime(sound)
-        // if (this.$store.state.login.logged === false) {
         if (this.$store.state.auth.loggedIn === false) {
           this.pauseMusic()
         }
       })
+    },
+    playMusic () {
+      if (!sound) {
+        this.currentSong = this.songs[0]
+        this.playSong(this.currentSong)
+      } else if (this.currentTime !== 0) {
+        sound.play()
+        this.isPlaying = true
+      } else {
+        this.playSong(this.currentSong)
+      }
     },
     pauseMusic () {
       if (sound) {
@@ -118,36 +146,46 @@ export default {
       this.isPlaying = false
     },
     nextSong () {
+      const index = this.songs.indexOf(this.currentSong)
       if (sound) {
-        sound.pause()
-        sound = new Audio(require('assets/Astronomical.mp3'))
-        this.playMusic()
+        if (index > -1) {
+          if ((this.songs.length - 1) === index) {
+            this.pauseMusic()
+            this.playSong(this.songs[0])
+          } else {
+            this.pauseMusic()
+            this.playSong(this.songs[index + 1])
+          }
+        }
       }
     },
     previousSong () {
+      const index = this.songs.indexOf(this.currentSong)
+      // console.log(index)
       if (sound) {
         if (this.isPlaying && sound.currentTime > 5) {
           sound.currentTime = 0
+        } else if (index === 0) {
+          this.pauseMusic()
+          this.playSong(this.songs[this.songs.length - 1])
         } else {
-          sound.pause()
-          sound = new Audio(require('assets/YES.mp3'))
-          this.playMusic()
+          this.pauseMusic()
+          this.playSong(this.songs[index - 1])
         }
       }
     },
     updateTime (sound) {
-      // this.$store.commit('volume/changeCurrentTime', sound.currentTime)
       this.currentTime = sound.currentTime
       this.duration = sound.duration
       const timeMinutes = Math.floor(sound.currentTime / 60).toFixed()
       const duration = sound.duration || 0
       const timeSeconds = (sound.currentTime - timeMinutes * 60).toFixed()
-      this.TimeMinutes = (timeMinutes >= 10) ? timeMinutes.toString() : '0' + timeMinutes.toString()
-      this.TimeSeconds = (timeSeconds >= 10) ? timeSeconds.toString() : '0' + timeSeconds.toString()
+      this.TimeMinutes = (timeMinutes >= 10) ? timeMinutes.toString() : '0' + timeMinutes.toString() // Current time Minutes toString
+      this.TimeSeconds = (timeSeconds >= 10) ? timeSeconds.toString() : '0' + timeSeconds.toString() // Current time Seconds toString
       const durationMinutes = Math.floor(duration / 60).toFixed()
       const durationSeconds = (duration - durationMinutes * 60).toFixed()
-      this.DurationMinutes = (durationMinutes >= 10) ? durationMinutes.toString() : '0' + durationMinutes.toString()
-      this.DurationSeconds = (durationSeconds >= 10) ? durationSeconds.toString() : '0' + durationSeconds.toString()
+      this.DurationMinutes = (durationMinutes >= 10) ? durationMinutes.toString() : '0' + durationMinutes.toString() // Duration minutes toString
+      this.DurationSeconds = (durationSeconds >= 10) ? durationSeconds.toString() : '0' + durationSeconds.toString() // Duration seconds toString
     },
     changeVolumeDisp () {
       this.$store.commit('volume/changeVolumeDisp')
@@ -157,6 +195,10 @@ export default {
         this.repeat = !this.repeat
         sound.loop = this.repeat
       }
+    },
+    test (newVal) {
+      // console.log(newVal)
+      sound.currentTime = newVal
     }
   }
 }
