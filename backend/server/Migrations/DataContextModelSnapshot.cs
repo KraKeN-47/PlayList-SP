@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.Data;
 
-namespace server.Data.Migrations
+namespace server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200330080958_AddedUserIdInPosts")]
-    partial class AddedUserIdInPosts
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,6 +73,9 @@ namespace server.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -114,6 +115,8 @@ namespace server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -186,6 +189,48 @@ namespace server.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("server.Domain.Music", b =>
+                {
+                    b.Property<Guid>("MusicId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Desc");
+
+                    b.Property<string>("Path");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("MusicId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Music");
+                });
+
+            modelBuilder.Entity("server.Domain.PlayList", b =>
+                {
+                    b.Property<Guid>("PlaylistId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Desc");
+
+                    b.Property<bool>("IsPrivate");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("PlaylistId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PlayList");
+                });
+
             modelBuilder.Entity("server.Domain.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -200,6 +245,33 @@ namespace server.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("server.Domain.UserPlayList", b =>
+                {
+                    b.Property<Guid>("UserPlaylist")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("MusicId");
+
+                    b.Property<Guid>("PlaylistId");
+
+                    b.HasKey("UserPlaylist");
+
+                    b.HasIndex("MusicId");
+
+                    b.HasIndex("PlaylistId");
+
+                    b.ToTable("UserPlayList");
+                });
+
+            modelBuilder.Entity("server.Domain.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<bool>("IsArtist");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -247,11 +319,38 @@ namespace server.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("server.Domain.Music", b =>
+                {
+                    b.HasOne("server.Domain.User", "User")
+                        .WithMany("Music")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("server.Domain.PlayList", b =>
+                {
+                    b.HasOne("server.Domain.User", "User")
+                        .WithMany("Playlists")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("server.Domain.Post", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                    b.HasOne("server.Domain.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("server.Domain.UserPlayList", b =>
+                {
+                    b.HasOne("server.Domain.Music", "Music")
+                        .WithMany("UserPlayLists")
+                        .HasForeignKey("MusicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("server.Domain.PlayList", "PlayList")
+                        .WithMany("UserPlayLists")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
