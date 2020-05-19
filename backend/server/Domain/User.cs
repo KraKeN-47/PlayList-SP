@@ -9,5 +9,8 @@ namespace server.Domain
     public class User : IdentityUser
     {
         public bool IsArtist { get; set; }
+
+        public ICollection<PlayList> Playlists { get; set; }
+
     }
 }

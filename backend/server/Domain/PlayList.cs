@@ -11,16 +11,15 @@ namespace server.Domain
     public class PlayList
     {
         [Key]
-        public Guid PlayList_Id { get; set; }
-        public string User_ID { get; set; }
-
-        [ForeignKey(nameof(User_ID))]
-        public User User { get; set; }
-
+        public Guid PlaylistId { get; set; }
+        public string UserId { get; set; }
         public string Title { get; set; }
         public bool IsPrivate { get; set; }
         public string Desc { get; set; }
 
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
 
+        public ICollection<UserPlayList> UserPlayLists { get; set; }
     }
 }

@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using server.Contracts.V1;
 using server.Contracts.V1.Requests;
 using server.Contracts.V1.Responses;
 using server.Services;
-using Microsoft.AspNetCore.Hosting;
 
 
 namespace server.Controllers.V1
@@ -80,10 +75,10 @@ namespace server.Controllers.V1
         {
             var handler = new JwtSecurityTokenHandler();
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var ReadToken = handler.ReadJwtToken(token);
-            var userName = ReadToken.Subject;
-            var email = ReadToken.Claims.Where(claim => claim.Type == "email").Select(Type => Type.Value).SingleOrDefault();
-            var isArtist = ReadToken.Claims.Where(claim => claim.Type == "isArtist").Select(Type => Type.Value).SingleOrDefault();
+            var readToken = handler.ReadJwtToken(token);
+            var userName = readToken.Subject;
+            var email = readToken.Claims.Where(claim => claim.Type == "email").Select(Type => Type.Value).SingleOrDefault();
+            var isArtist = readToken.Claims.Where(claim => claim.Type == "isArtist").Select(Type => Type.Value).SingleOrDefault();
             return Ok( new { user = new UserResponse { Email = email.ToString(), UserName = userName , IsArtist = bool.Parse(isArtist.ToString()) } });
         }
 

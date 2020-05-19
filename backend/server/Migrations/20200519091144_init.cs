@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace server.Data.Migrations
+namespace server.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,11 +40,28 @@ namespace server.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    IsArtist = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Music",
+                columns: table => new
+                {
+                    MusicId = table.Column<Guid>(nullable: false),
+                    Artist = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    Desc = table.Column<string>(nullable: true),
+                    Path = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Music", x => x.MusicId);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +170,71 @@ namespace server.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PlayList",
+                columns: table => new
+                {
+                    PlaylistId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    IsPrivate = table.Column<bool>(nullable: false),
+                    Desc = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayList", x => x.PlaylistId);
+                    table.ForeignKey(
+                        name: "FK_PlayList_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPlayList",
+                columns: table => new
+                {
+                    UserPlaylist = table.Column<Guid>(nullable: false),
+                    PlaylistId = table.Column<Guid>(nullable: false),
+                    MusicId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPlayList", x => x.UserPlaylist);
+                    table.ForeignKey(
+                        name: "FK_UserPlayList_Music_MusicId",
+                        column: x => x.MusicId,
+                        principalTable: "Music",
+                        principalColumn: "MusicId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserPlayList_PlayList_PlaylistId",
+                        column: x => x.PlaylistId,
+                        principalTable: "PlayList",
+                        principalColumn: "PlaylistId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +273,26 @@ namespace server.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayList_UserId",
+                table: "PlayList",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserId",
+                table: "Posts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPlayList_MusicId",
+                table: "UserPlayList",
+                column: "MusicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPlayList_PlaylistId",
+                table: "UserPlayList",
+                column: "PlaylistId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,7 +313,19 @@ namespace server.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "UserPlayList");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Music");
+
+            migrationBuilder.DropTable(
+                name: "PlayList");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

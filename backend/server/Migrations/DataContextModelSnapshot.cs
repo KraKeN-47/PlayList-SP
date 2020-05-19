@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.Data;
 
-namespace server.Data.Migrations
+namespace server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -191,7 +191,7 @@ namespace server.Data.Migrations
 
             modelBuilder.Entity("server.Domain.Music", b =>
                 {
-                    b.Property<Guid>("Music_ID")
+                    b.Property<Guid>("MusicId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Artist");
@@ -202,14 +202,14 @@ namespace server.Data.Migrations
 
                     b.Property<string>("Title");
 
-                    b.HasKey("Music_ID");
+                    b.HasKey("MusicId");
 
                     b.ToTable("Music");
                 });
 
             modelBuilder.Entity("server.Domain.PlayList", b =>
                 {
-                    b.Property<Guid>("PlayList_Id")
+                    b.Property<Guid>("PlaylistId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Desc");
@@ -218,11 +218,11 @@ namespace server.Data.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("User_ID");
+                    b.Property<string>("UserId");
 
-                    b.HasKey("PlayList_Id");
+                    b.HasKey("PlaylistId");
 
-                    b.HasIndex("User_ID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("PlayList");
                 });
@@ -245,18 +245,18 @@ namespace server.Data.Migrations
 
             modelBuilder.Entity("server.Domain.UserPlayList", b =>
                 {
-                    b.Property<Guid>("User_PlayList_ID")
+                    b.Property<Guid>("UserPlaylist")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("Music_ID");
+                    b.Property<Guid>("MusicId");
 
-                    b.Property<Guid>("Playlist_ID");
+                    b.Property<Guid>("PlaylistId");
 
-                    b.HasKey("User_PlayList_ID");
+                    b.HasKey("UserPlaylist");
 
-                    b.HasIndex("Music_ID");
+                    b.HasIndex("MusicId");
 
-                    b.HasIndex("Playlist_ID");
+                    b.HasIndex("PlaylistId");
 
                     b.ToTable("UserPlayList");
                 });
@@ -318,8 +318,8 @@ namespace server.Data.Migrations
             modelBuilder.Entity("server.Domain.PlayList", b =>
                 {
                     b.HasOne("server.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_ID");
+                        .WithMany("Playlists")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("server.Domain.Post", b =>
@@ -332,13 +332,13 @@ namespace server.Data.Migrations
             modelBuilder.Entity("server.Domain.UserPlayList", b =>
                 {
                     b.HasOne("server.Domain.Music", "Music")
-                        .WithMany()
-                        .HasForeignKey("Music_ID")
+                        .WithMany("UserPlayLists")
+                        .HasForeignKey("MusicId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("server.Domain.PlayList", "PlayList")
-                        .WithMany()
-                        .HasForeignKey("Playlist_ID")
+                        .WithMany("UserPlayLists")
+                        .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
