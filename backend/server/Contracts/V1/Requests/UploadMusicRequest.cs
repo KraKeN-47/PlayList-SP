@@ -12,6 +12,8 @@ namespace server.Contracts.V1.Requests
         public string Title { get; set; }
         public string  Description { get; set; }
         [FromForm(Name = "file")]
-        public IFormFile File { get; set; } 
+        public IFormFile File { get; set; }
+
+        public string UserName { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace server.Domain
         public bool IsArtist { get; set; }
 
         public ICollection<PlayList> Playlists { get; set; }
+        public ICollection<Music> Music { get; set; }
 
     }
 }

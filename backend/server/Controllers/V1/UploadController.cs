@@ -25,7 +25,7 @@ namespace server.Controllers.V1
         [HttpPost(ApiRoutes.MusicFile.Upload)]
         public async Task<IActionResult> UploadFile(UploadMusicRequest request)
         {
-            if (request.File == null || !request.File.ContentType.Equals("audio/mp3"))
+            if (request.File == null || !request.File.ContentType.Equals("audio/mpeg"))
             {
                 return BadRequest(new { message = "File has an incorrect type, please try again!" });
             }
@@ -41,9 +41,13 @@ namespace server.Controllers.V1
             var music = new Music()
             {
                 MusicId = id,
-                //Artist = 
-
+                Title = request.Title,
+                Desc = request.Description,
+                Path = $"{path}/{id.ToString()}.mp3",
+                UserName = request.UserName
             };
+
+            await _uploadService.CreateMusicAsync(music);
 
             return Ok(new UploadMusicResponse(){Message = "Success"});
         }
