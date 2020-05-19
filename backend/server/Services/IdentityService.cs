@@ -28,12 +28,13 @@ namespace server.Services
         public async Task<AuthenticationResult> RegisterAsync(UserRegistrationRequest request)
         {
             var existingUser = await _userManager.FindByEmailAsync(request.Email);
+            var duplicateUserName = await _userManager.FindByNameAsync(request.UserName);
 
-            if (existingUser != null)
+            if (existingUser != null && duplicateUserName != null)
             {
                 return new AuthenticationResult
                 {
-                    Errors = new [] {"User with this email address already exists"}
+                    Errors = new [] {"User with this email address or username already exists"}
                 };
             }
 
