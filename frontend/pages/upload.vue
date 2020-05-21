@@ -79,6 +79,8 @@ export default {
       formData.append('file', this.file)
       formData.append('description', this.description)
       formData.append('title', this.title)
+      formData.append('userName', this.$auth.user.userName)
+      formData.append('userId', this.$auth.user.id)
       const config = {
         headers: {
           'content-type': 'multipart/form-data'

@@ -14,7 +14,14 @@
       app
       hidden:true
     >
-      <nav-bar-options v-if="$auth.loggedIn" :is-artist="this.$auth.user.isArtist" />
+      <div v-if="$auth.loggedIn === true">
+        <nav-bar-options :is-artist="this.$auth.user.isArtist" />
+      </div>
+      <nuxt-link class="routerLink" to="/music">
+        <v-btn block @click="getMusic">
+          Music
+        </v-btn>
+      </nuxt-link>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
@@ -66,7 +73,7 @@
       <!-- Logged In navbar -->
       <div v-if="$auth.loggedIn">
         <v-label>
-          Hello, {{ this.$auth.user.userName }}
+          Hello, {{ this.$auth.user }}
         </v-label>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <nuxt-link class="routerLink" to="/upload">
@@ -98,10 +105,18 @@
       thumb-color="black"
       color="black"
     />
+    <div v-if="$auth.loggedIn && this.$store.state.playlist.isPlaylistDisp" class="playlist">
+      <ul>
+        <li v-for="item in this.$store.state.allplaylistmusic.playlistArr">
+          {{ item.song.name }} &nbsp;&nbsp;&nbsp;
+        </li>
+      </ul>
+    </div>
     <music-player v-if="$auth.loggedIn" />
   </v-app>
 </template>
 <script>
+import axios from 'axios'
 import MusicPlayer from '@/components/MusicPlayer.vue'
 import NavBarOptions from '@/components/NavBarOptions.vue'
 // eslint-disable-next-line no-unused-vars
@@ -116,10 +131,16 @@ export default {
     drawer: false,
     volume: 70
   }),
+  computed: {
+    songs () {
+      return this.$store.state.allplaylistmusic.playlistArr
+    }
+  },
   watch: {
     volume (newVal) {
       this.$store.commit('volume/changeVolume', newVal)
-    }
+    },
+    songs () {}
   },
   methods: {
     scrollToTop () {
@@ -132,6 +153,15 @@ export default {
     logout () {
       this.$auth.logout()
       this.$store.commit('login/LOGGED_OUT')
+      this.$store.commit('allplaylistmusic/LOGGED_OUT')
+    },
+    async getMusic () {
+      try {
+        await axios.get('https://localhost:5001/api/v1/getmusicbyid').then((response) => { let arr = []; arr = response; this.$store.commit('allMusic/addArray', response); console.log(this.$store.state.allMusic.musicArr); console.log(response.musicObj); console.log(arr) })
+        // await axios.get('https://localhost:5001/api/v1/getallmusic', this.ListOfMusic)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
@@ -189,5 +219,10 @@ export default {
   bottom: 8%;
   position: fixed;
 }
-
+.playlist{
+  left: 72%;
+  bottom: 8%;
+  position: fixed;
+  background: black;
+}
 </style>

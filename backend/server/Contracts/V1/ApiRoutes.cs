@@ -30,6 +30,8 @@ namespace server.Contracts.V1
         public static class MusicFile
         {
             public const string Upload = Base + "/upload";
+            public const string GetAllMusic = Base + "/getallmusic";
+            public const string GetMusicById = Base + "/getmusicbyid";
         }
 
     }
