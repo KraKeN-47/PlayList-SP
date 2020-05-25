@@ -18,7 +18,7 @@ namespace server.Installers
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddScoped<IPostService, PostService>();
-            services.AddScoped<IUploadService, UploadService>();
+            services.AddScoped<IMusicService, MusicService>();
         }
     }
 }

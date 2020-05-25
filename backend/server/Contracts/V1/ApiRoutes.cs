@@ -27,11 +27,22 @@ namespace server.Contracts.V1
             public const string UserData = Base + "/identity/UserData";
         }
 
-        public static class MusicFile
+        public static class Music
         {
-            public const string Upload = Base + "/upload";
-            public const string GetAllMusic = Base + "/getallmusic";
-            public const string GetMusicById = Base + "/getmusicbyid";
+            public const string GetAll = Base + "/music";
+            public const string Create = Base + "/music";
+            public const string Get = Base + "/music/{musicId}";
+            public const string Update = Base + "/music/{musicId}";
+            public const string Delete = Base + "/music/{musicId}";
+
+        }
+        public static class Playlist
+        {
+            public const string GetAll = Base + "/playlist";
+            public const string Create = Base + "/playlist";
+            public const string Get = Base + "/playlist/{playlistId}";
+            public const string Update = Base + "/playlist/{playlistId}";
+            public const string Delete = Base + "/playlist/{playlistId}";
         }
 
     }
