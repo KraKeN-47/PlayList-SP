@@ -111,7 +111,7 @@
                 light
                 label="Please enter your playlist name:"
                 prepend-icon="mdi-text"
-                counter="20"
+                counter
                 solo
               />
               <v-text-field
@@ -139,6 +139,7 @@
 
 <script>
 export default {
+  middleware: 'auth-isUser',
   data () {
     return {
       overlay: false,
@@ -165,7 +166,6 @@ export default {
   methods: {
     showPlaylistSongs (index) {
       this.showSongs === true ? this.showSongs = false : this.showSongs = true
-      console.log(index)
     },
     load () {
       this.$store.commit('allplaylistmusic/addArray', this.allPlaylistSongs)

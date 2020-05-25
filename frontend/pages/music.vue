@@ -28,7 +28,7 @@
           </div>
         </v-flex>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <v-flex md2>
+        <v-flex md3>
           <div class="caption black--text">
             Title
           </div>
@@ -94,9 +94,9 @@ export default {
   },
   async created () { // fetch data before rendering
     try {
-      await axios.get('https://localhost:5001/api/v1/getmusicbyid')
+      await axios.get('https://localhost:5001/api/v1/music')
         .then((response) => {
-          this.$store.commit('allMusic/addArray', response.data)
+          this.$store.commit('allMusic/addArray', response.data.musicList)
         })
     } catch (error) {
       alert(error)
@@ -114,7 +114,6 @@ export default {
       } else if (this.currentPage === 0) {
         this.selectedSong = this.music[index]
       }
-      // this.selectedSong = this.$store.state.allMusic.allMusic[index]
       console.log(this.selectedSong)
     },
     updatePage (pageNumber) {
@@ -122,7 +121,6 @@ export default {
       this.updatePageSongs()
     },
     updatePageSongs () {
-      // this.visibleSongs = this.music.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize)
       this.visibleSongs = this.music.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize)
     }
   }
