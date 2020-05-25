@@ -15,7 +15,7 @@
           light
           label="Please enter your song title:"
           prepend-icon="mdi-text"
-          counter="20"
+          counter
           :rules="[requiredField('title','')]"
           solo
         />
@@ -87,7 +87,7 @@ export default {
         }
       }
       try {
-        await axios.post('https://localhost:5001/api/v1/upload', formData, config)
+        await axios.post('https://localhost:5001/api/v1/music', formData, config)
       } catch (error) {
         this.errorMsg = error.response.data.message
         this.failed = true
