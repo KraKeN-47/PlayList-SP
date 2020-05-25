@@ -38,7 +38,7 @@ namespace server.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Playlist.Create)]
-        public async Task<IActionResult> UploadFile(CreatePlaylistRequest request)
+        public async Task<IActionResult> UploadFile([FromBody]CreatePlaylistRequest request)
         {
             var playlist = new PlayList()
             {
@@ -71,16 +71,15 @@ namespace server.Controllers.V1
         }
 
         [HttpDeleteAttribute(ApiRoutes.Playlist.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] Guid playlistId)
+        public async Task<IActionResult> Delete([FromRoute] string playlistId)
         {
-            var deleted = await _playlistService.DeletePlaylistAsync(playlistId);
+            Guid guid = Guid.Parse(playlistId);
+            var deleted = await _playlistService.DeletePlaylistAsync(guid);
 
             if (deleted)
                 return NoContent();
 
             return NotFound();
         }
-
-
     }
 }

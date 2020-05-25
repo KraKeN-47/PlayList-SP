@@ -164,6 +164,7 @@ export default {
       this.isPlaying = false
     },
     nextSong () {
+      this.repeat = false
       const index = this.songs.indexOf(this.currentSong)
       if (sound) {
         if (index > -1) {
@@ -178,6 +179,7 @@ export default {
       }
     },
     previousSong () {
+      this.repeat = false
       const index = this.songs.indexOf(this.currentSong)
       // console.log(index)
       if (sound) {
