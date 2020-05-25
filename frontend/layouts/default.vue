@@ -18,7 +18,7 @@
         <nav-bar-options :is-artist="this.$auth.user.isArtist" />
       </div>
       <nuxt-link class="routerLink" to="/music">
-        <v-btn block @click="getMusic">
+        <v-btn block>
           Music
         </v-btn>
       </nuxt-link>
@@ -73,7 +73,7 @@
       <!-- Logged In navbar -->
       <div v-if="$auth.loggedIn">
         <v-label>
-          Hello, {{ this.$auth.user }}
+          {{ this.$auth.user.email }}
         </v-label>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <nuxt-link class="routerLink" to="/upload">
@@ -105,18 +105,19 @@
       thumb-color="black"
       color="black"
     />
-    <div v-if="$auth.loggedIn && this.$store.state.playlist.isPlaylistDisp" class="playlist">
-      <ul>
-        <li v-for="item in this.$store.state.allplaylistmusic.playlistArr">
-          {{ item.song.name }} &nbsp;&nbsp;&nbsp;
-        </li>
-      </ul>
-    </div>
+    <transition name="playlistView">
+      <div v-if="$auth.loggedIn && this.$store.state.playlist.isPlaylistDisp" class="playlist">
+        <ul>
+          <li v-for="item in this.$store.state.allplaylistmusic.playlistArr" :key="item.key">
+            {{ item.title }}
+          </li>
+        </ul>
+      </div>
+    </transition>
     <music-player v-if="$auth.loggedIn" />
   </v-app>
 </template>
 <script>
-import axios from 'axios'
 import MusicPlayer from '@/components/MusicPlayer.vue'
 import NavBarOptions from '@/components/NavBarOptions.vue'
 // eslint-disable-next-line no-unused-vars
@@ -129,7 +130,7 @@ export default {
   data: () => ({
     dialog: false,
     drawer: false,
-    volume: 70
+    volume: 0.1
   }),
   computed: {
     songs () {
@@ -154,14 +155,6 @@ export default {
       this.$auth.logout()
       this.$store.commit('login/LOGGED_OUT')
       this.$store.commit('allplaylistmusic/LOGGED_OUT')
-    },
-    async getMusic () {
-      try {
-        await axios.get('https://localhost:5001/api/v1/getmusicbyid').then((response) => { let arr = []; arr = response; this.$store.commit('allMusic/addArray', response); console.log(this.$store.state.allMusic.musicArr); console.log(response.musicObj); console.log(arr) })
-        // await axios.get('https://localhost:5001/api/v1/getallmusic', this.ListOfMusic)
-      } catch (error) {
-        console.log(error)
-      }
     }
   }
 }
@@ -201,6 +194,13 @@ export default {
   opacity: 0;
   transform: scale(0);
 }
+.playlistView-enter, .playlistView-leave-active{
+  opacity: 0;
+  transform: scale(0);
+}
+.playlistView-enter-active, .playlistView-leave-active{
+  transition: all 0.7s;
+}
 .scroll-to-top-btn:hover{
   color: black;
   box-shadow: 0px  0px 20px black;
@@ -224,5 +224,7 @@ export default {
   bottom: 8%;
   position: fixed;
   background: black;
+  padding: 10px;
+  border-radius: 10px;
 }
 </style>

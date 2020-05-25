@@ -1,11 +1,5 @@
 <template>
   <div class="NavBarOptions">
-    <v-btn
-      id="b5"
-      block
-    >
-      MAIN
-    </v-btn>
     <nuxt-link class="routerLink" to="/myplaylists">
       <v-btn
         id="b1"

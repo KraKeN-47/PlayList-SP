@@ -103,7 +103,7 @@ export default {
 
  .uploadd{
     width:600px;
-    height: 400px;
+    height: 300px;
     border-radius: 40px;
     margin: auto;
     margin-top: 170px;

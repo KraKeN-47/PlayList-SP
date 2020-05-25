@@ -43,7 +43,7 @@ namespace server.Controllers.V1
                 MusicId = id,
                 Title = request.Title,
                 Desc = request.Description,
-                Path = $"{path}/{id.ToString()}.mp3",
+                Path = $"{path}\\{id.ToString()}.mp3",
                 UserName = request.UserName
                 //UserId = request.UserId
             };
@@ -63,7 +63,8 @@ namespace server.Controllers.V1
         {
             List<Music> allMusic = await _uploadService.GetAllMusicAsync();
             //await _uploadService.DeleteMusicAsync(Guid.Parse("1AF58D49-42B4-4060-94F2-6DDB1E27D7CE"));
-            return Ok(new { musicObj = allMusic });
+            return Ok(allMusic);
+            //return Ok();
         }
     }
 }

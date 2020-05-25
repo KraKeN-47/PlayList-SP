@@ -1,6 +1,6 @@
 export const state = () => ({
   isVolumeDisp: false,
-  volume: 50,
+  volume: 0.1,
   CurrentTime: 0
 })
 

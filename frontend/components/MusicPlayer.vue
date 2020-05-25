@@ -14,7 +14,7 @@
         depressed
         large=""
         :disabled="songs.length === 0"
-        @click="playMusic()"
+        @click="playMusic();"
       >
         <v-icon>
           mdi-play
@@ -38,7 +38,14 @@
           mdi-skip-next
         </v-icon>
       </v-btn>
-      <v-btn id="Volume-BTN" fab depressed x-small :disabled="songs.length === 0" @click="changeVolumeDisp">
+      <v-btn
+        id="Volume-BTN"
+        fab
+        depressed
+        x-small
+        :disabled="songs.length === 0"
+        @click="changeVolumeDisp"
+      >
         <v-icon>
           mdi-volume-high
         </v-icon>
@@ -92,12 +99,7 @@ export default {
       currentTime: 0,
       duration: 0,
       test: false,
-      // songs: [
-      //   { path: require('assets/YES.mp3') },
-      //   { path: require('assets/Astronomical.mp3') },
-      //   { path: require('assets/dd576edb-64ae-4554-8ba4-33ec09e5773f.mp3') }
-      // ],
-      // songs: this.$store.state.allplaylistmusic.playlistArr,
+      testsongs: [],
       currentSong: null
     }
   },
@@ -130,13 +132,12 @@ export default {
   },
   methods: {
     playSong (song, isPaused) {
-      if (!sound) {
-        sound = new Audio(song.path)
-      }
       this.isPlaying = true
-      sound = new Audio(song.song.path)
+      sound = new Audio(require(`assets/${song.musicId}.mp3`))
       this.currentSong = song
+      sound.volume = this.volume
       // const index = this.songs.indexOf(this.currentSong)
+      // this.$emit('currentSong-update', index)
       sound.play()
       sound.addEventListener('timeupdate', (update) => {
         this.updateTime(sound)
@@ -192,13 +193,19 @@ export default {
       }
     },
     updateTime (sound) {
-      this.currentTime = sound.currentTime
+      this.currentTime = sound.currentTime - 1
       this.duration = sound.duration
-      const timeMinutes = Math.floor(sound.currentTime / 60).toFixed()
       const duration = sound.duration || 0
+      let timeMinutes = Math.floor(sound.currentTime / 60).toFixed()
       const timeSeconds = (sound.currentTime - timeMinutes * 60).toFixed()
-      this.TimeMinutes = (timeMinutes >= 10) ? timeMinutes.toString() : '0' + timeMinutes.toString() // Current time Minutes toString
-      this.TimeSeconds = (timeSeconds >= 10) ? timeSeconds.toString() : '0' + timeSeconds.toString() // Current time Seconds toString
+      if (timeSeconds === '60') {
+        this.TimeSeconds = '00'
+        timeMinutes = parseInt(timeMinutes) + 1
+        this.TimeMinutes = (timeMinutes >= 10) ? timeMinutes.toString() : '0' + timeMinutes.toString() // Current time Minutes toString
+      } else {
+        this.TimeSeconds = (timeSeconds >= 10) ? timeSeconds.toString() : '0' + timeSeconds.toString() // Current time Seconds toString
+        this.TimeMinutes = (timeMinutes >= 10) ? timeMinutes.toString() : '0' + timeMinutes.toString() // Current time Minutes toString
+      }
       const durationMinutes = Math.floor(duration / 60).toFixed()
       const durationSeconds = (duration - durationMinutes * 60).toFixed()
       this.DurationMinutes = (durationMinutes >= 10) ? durationMinutes.toString() : '0' + durationMinutes.toString() // Duration minutes toString
