@@ -62,12 +62,14 @@ namespace server.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Music.Get)]
-        public async Task<IActionResult> GetMusicById()
+        public async Task<IActionResult> Get([FromRoute] Guid musicId)
         {
-            List<Music> allMusic = await _musicService.GetMusicAsync();
-            //await _uploadService.DeleteMusicAsync(Guid.Parse("1AF58D49-42B4-4060-94F2-6DDB1E27D7CE"));
-            return Ok(allMusic);
-            //return Ok();
+            var music = await _musicService.GetMusicByIdAsync(musicId);
+
+            if (music == null)
+                return NotFound();
+
+            return Ok(music);
         }
 
         [HttpPut(ApiRoutes.Music.Update)]

@@ -19,6 +19,7 @@ namespace server.Installers
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMusicService, MusicService>();
+            services.AddScoped<IPlaylistService, PlaylistService>();
         }
     }
 }
