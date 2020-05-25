@@ -27,19 +27,25 @@ namespace server.Services
             return created > 0;
         }
 
-        public async Task<Music> GetPlaylistByIdAsync(Guid playlistId)
+        public async Task<PlayList> GetPlaylistByIdAsync(Guid playlistId)
         {
-            return await _dataContext.Music.SingleOrDefaultAsync(x => x.MusicId == playlistId);
+            return await _dataContext.PlayList.SingleOrDefaultAsync(x => x.PlaylistId == playlistId);
         }
 
-        public Task<bool> UpdatePlaylistAsync(Music musicToUpdate)
+        public async Task<bool> UpdatePlaylistAsync(PlayList playlistToUpload)
         {
-            throw new NotImplementedException();
+            _dataContext.PlayList.Update(playlistToUpload);
+            var updated = await _dataContext.SaveChangesAsync();
+            return updated > 0;
         }
 
-        public Task<bool> DeletePlaylistAsync(Guid palylistId)
+        public async Task<bool> DeletePlaylistAsync(Guid playlistId)
         {
-            throw new NotImplementedException();
+            var playlist = await GetPlaylistByIdAsync(playlistId);
+            _dataContext.Remove(playlist);
+            var deleted = await _dataContext.SaveChangesAsync();
+            return deleted > 0;
         }
+
     }
 }
