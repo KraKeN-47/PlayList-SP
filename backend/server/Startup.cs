@@ -21,6 +21,7 @@ namespace server
         {
             services.InstallServicesInAssembly(Configuration);
 
+
             // <-- Add CORS policy to allow frontend to access the API -->
             services.AddCors(options =>
                 options.AddPolicy("MyPolicy", builder =>
