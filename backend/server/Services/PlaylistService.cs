@@ -47,5 +47,9 @@ namespace server.Services
             return deleted > 0;
         }
 
+        public async Task<List<PlayList>> GetPlaylistsByUserId(Guid userId)
+        {
+            return await _dataContext.PlayList.Where(a => a.UserId == userId.ToString()).ToListAsync();
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace server.Controllers.V1
         public async Task<IActionResult> GetAllPlaylists()
         {
             List<PlayList> allPlaylists = await _playlistService.GetPlaylistsAsync();
-            return Ok(new { musicList = allPlaylists });
+            return Ok(new { playlists = allPlaylists });
         }
 
         [HttpGet(ApiRoutes.Playlist.Get)]
@@ -81,6 +81,12 @@ namespace server.Controllers.V1
             return NotFound();
         }
 
+        [HttpGet(ApiRoutes.Playlist.GetByUserId)]
+        public async Task<IActionResult> GetAllByUserId([FromRoute] Guid userId)
+        {
+            List<PlayList> allPlaylists = await _playlistService.GetPlaylistsByUserId(userId);
+            return Ok(new { playlists = allPlaylists });
+        }
 
     }
 }
