@@ -88,5 +88,19 @@ namespace server.Controllers.V1
             return Ok(new { playlists = allPlaylists });
         }
 
+        [HttpPost(ApiRoutes.Playlist.AddMusicToPlaylist)]
+        public async Task<IActionResult> AddMusicToPlaylist(AddMusicToPlaylistRequest request)
+        {
+            var record = new UserPlayList()
+            {
+                PlaylistId = request.PlaylistId,
+                MusicId = request.MusicId
+            };
+
+            await _playlistService.AddMusicToPlaylist(record);
+
+            return Ok(new AddedToPlaylistResponse() { Message = "Success" });
+        }
+
     }
 }

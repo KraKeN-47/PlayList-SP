@@ -51,5 +51,12 @@ namespace server.Services
         {
             return await _dataContext.PlayList.Where(a => a.UserId == userId.ToString()).ToListAsync();
         }
+
+        public async Task<bool> AddMusicToPlaylist(UserPlayList record)
+        {
+            await _dataContext.UserPlayList.AddAsync(record);
+            var created = await _dataContext.SaveChangesAsync();
+            return created > 0;
+        }
     }
 }

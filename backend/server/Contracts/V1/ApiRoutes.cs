@@ -34,6 +34,7 @@ namespace server.Contracts.V1
             public const string Get = Base + "/music/{musicId}";
             public const string Update = Base + "/music/{musicId}";
             public const string Delete = Base + "/music/{musicId}";
+            public const string GetByPlaylistId = Base + "/music/playlists/{playlistId}";
 
         }
         public static class Playlist
@@ -44,6 +45,7 @@ namespace server.Contracts.V1
             public const string Update = Base + "/playlist/{playlistId}";
             public const string Delete = Base + "/playlist/{playlistId}";
             public const string GetByUserId = Base + "/playlist/users/{userId}";
+            public const string AddMusicToPlaylist = Base + "/playlist/music";
         }
 
     }

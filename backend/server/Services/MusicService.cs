@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using server.Data;
 using server.Domain;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Design;
+using Remotion.Linq.Clauses;
 
 namespace server.Services
 {
@@ -43,6 +46,16 @@ namespace server.Services
             _dataContext.Remove(music);
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
+        }
+
+        public async Task<List<Music>> GetMusicByPlaylistId(Guid playlistId)
+        {
+            var query = await (from a in _dataContext.UserPlayList
+                from b in _dataContext.Music
+                where a.PlaylistId == playlistId && a.MusicId == b.MusicId
+                select b).ToListAsync();
+
+            return query;
         }
     }
 }
