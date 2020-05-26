@@ -46,6 +46,7 @@ namespace server.Contracts.V1
             public const string Delete = Base + "/playlist/{playlistId}";
             public const string GetByUserId = Base + "/playlist/users/{userId}";
             public const string AddMusicToPlaylist = Base + "/playlist/music";
+            public const string DeleteFromPlaylist = Base + "/playlist/music/delete";
         }
 
     }
