@@ -89,7 +89,7 @@ namespace server.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Playlist.AddMusicToPlaylist)]
-        public async Task<IActionResult> AddMusicToPlaylist(AddMusicToPlaylistRequest request)
+        public async Task<IActionResult> AddMusicToPlaylist([FromBody]AddMusicToPlaylistRequest request)
         {
             var record = new UserPlayList()
             {

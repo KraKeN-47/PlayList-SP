@@ -1,6 +1,6 @@
 export const state = () => ({
   playlistArr: [],
-  index: -1
+  currentSong: null
 })
 
 export const mutations = {
@@ -13,5 +13,8 @@ export const mutations = {
   },
   LOGGED_OUT (state, newVal) {
     state.playlistArr = []
+  },
+  setCurrentSong (state, newVal) {
+    state.currentSong = newVal
   }
 }

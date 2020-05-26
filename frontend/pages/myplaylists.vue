@@ -6,18 +6,18 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <div>
-          <v-card v-for="song in this.$store.state.allplaylistmusic.playlistArr" :key="song.path" color="rgb(201, 190, 170)" outlined class="song">
+          <v-card v-for="(song, index) in allPlaylistSongs" :key="song.path" color="rgb(201, 190, 170)" outlined class="song">
             <v-layout row wrap>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <v-flex md1>
-                <div class="half"></div>
+                <div class="half" />
                 <div>
-                  <v-btn x-small fab depressed>
+                  <v-btn x-small fab depressed @click="removeFromPlaylist(index)">
                     <v-icon>mdi-minus</v-icon>
                   </v-btn>
                 </div>
               </v-flex>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <v-flex md2>
                 <div class="caption black--text">
                   Title
@@ -76,17 +76,10 @@
             </div>
             <div>{{ list.desc }}</div>
           </v-flex>
-          <!-- <v-flex md2>
-            <div class="caption white--text">
-              <br>
-              Creator
-            </div>
-            <div> {{ list.user }} </div>
-          </v-flex> -->
           <v-flex md1>
             <div class="halff" />
             <div>
-              <v-btn x-small @click="load()">
+              <v-btn x-small @click="load(index)">
                 Load playlist
               </v-btn>
             </div>
@@ -164,39 +157,27 @@ export default {
     return {
       isPrivate: false,
       overlay: false,
-      allPlaylistSongs: this.$store.state.allMusic.allMusic,
+      allPlaylistSongs: [],
       valid: true,
       description: '',
       title: '',
-      // playlist: [
-      //   {
-      //     playlistContent: {
-      //       title: 'First playlist title',
-      //       description: 'First playlist desc',
-      //       user: 'Creator 1'
-      //     }
-      //   },
-      //   {
-      //     playlistContent: {
-      //       title: 'Second playlist title',
-      //       description: 'Second playlist desc',
-      //       user: 'Creator 2'
-      //     }
-      //   }
-      // ],
       playlists: [],
-      showSongs: false
+      showSongs: false,
+      selectedSong: null
     }
   },
   computed: {
     myPlaylists () {
       return this.$store.state.playlist.myPlaylists
+    },
+    playlistSongs () {
+      return this.$store.state.allplaylistmusic.playlistArr
     }
   },
   async created () {
     try {
       await axios.get('https://localhost:5001/api/v1/playlist').then((response) => {
-        this.$store.commit('playlist/Playlists', response.data.musicList)
+        this.$store.commit('playlist/Playlists', response.data.playlists)
       })
     } catch (error) {
       alert(error)
@@ -204,10 +185,35 @@ export default {
     this.playlists = this.myPlaylists
   },
   methods: {
-    showPlaylistSongs (index) {
-      this.showSongs === true ? this.showSongs = false : this.showSongs = true
+    async removeFromPlaylist (index) {
+      this.selectedSong = this.allPlaylistSongs[index].musicId
+      try {
+        await axios.delete()
+      } catch (error) {
+      }
     },
-    load () {
+    async showPlaylistSongs (index) {
+      this.showSongs === true ? this.showSongs = false : this.showSongs = true
+      const selectedPlaylist = this.myPlaylists[index]
+      try {
+        await axios.get(`https://localhost:5001/api/v1/music/playlists/${selectedPlaylist.playlistId}`)
+          .then((response) => { this.allPlaylistSongs = response.data.musicList; console.log(this.allPlaylistSongs) })
+      } catch (error) {
+        alert(error)
+        console.log(error)
+      }
+    },
+    async load (index) {
+      const empty = []
+      this.$store.commit('allplaylistmusic/addArray', empty)
+      const selectedPlaylist = this.myPlaylists[index]
+      try {
+        await axios.get(`https://localhost:5001/api/v1/music/playlists/${selectedPlaylist.playlistId}`)
+          .then((response) => { this.allPlaylistSongs = response.data.musicList; console.log(this.allPlaylistSongs) })
+      } catch (error) {
+        alert(error)
+        console.log(error)
+      }
       this.$store.commit('allplaylistmusic/addArray', this.allPlaylistSongs)
     },
     requiredField (property, re) { // finds out if field is not empty, else returns an error message.

@@ -64,10 +64,10 @@ export default {
       },
       tokenType: 'bearer'
     },
-    redirect: {
-      home: '/inspire',
-      callback: '/inspire'
-    },
+    // redirect: {
+    //   home: '/',
+    //   callback: '/'
+    // },
     tokenTye: ''
   },
   /*
