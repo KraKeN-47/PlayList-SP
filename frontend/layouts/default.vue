@@ -241,11 +241,12 @@ export default {
   left: 72%;
   bottom: 8%;
   position: fixed;
-  background: black;
+  background: rgb(201, 190, 170);
   padding: 10px;
   border-radius: 10px;
 }
 li:hover {
     cursor: pointer;
+    color: green;
 }
 </style>

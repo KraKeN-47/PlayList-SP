@@ -163,7 +163,8 @@ export default {
       title: '',
       playlists: [],
       showSongs: false,
-      selectedSong: null
+      selectedSong: {},
+      selectedPlaylist: {}
     }
   },
   computed: {
@@ -187,18 +188,25 @@ export default {
   },
   methods: {
     async removeFromPlaylist (index) {
-      this.selectedSong = this.allPlaylistSongs[index].musicId
+      this.$store.commit('musicandplaylistselection/addSelectedSong', this.$store.state.musicandplaylistselection.allPlaylistSongs[index])
       try {
-        await axios.delete()
+        await axios.post('https://localhost:5001/api/v1/playlist/music/delete', {
+          MusicId: this.$store.state.musicandplaylistselection.selectedSong.musicId,
+          PlaylistId: this.$store.state.musicandplaylistselection.selectedPlaylist.playlistId
+        })
       } catch (error) {
+        alert(error)
+        console.log(error)
       }
+      window.location.href = 'http://localhost:3000/myplaylists'
     },
     async showPlaylistSongs (index) {
       this.showSongs === true ? this.showSongs = false : this.showSongs = true
+      this.$store.commit('musicandplaylistselection/addSelectedPlaylist', this.myPlaylists[index])
       const selectedPlaylist = this.myPlaylists[index]
       try {
         await axios.get(`https://localhost:5001/api/v1/music/playlists/${selectedPlaylist.playlistId}`)
-          .then((response) => { this.allPlaylistSongs = response.data.musicList; console.log(this.allPlaylistSongs) })
+          .then((response) => { this.$store.commit('musicandplaylistselection/addPlaylistSongs', response.data.musicList); this.allPlaylistSongs = response.data.musicList })
       } catch (error) {
         alert(error)
         console.log(error)

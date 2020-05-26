@@ -7,7 +7,7 @@ namespace server.Contracts.V1.Requests
 {
     public class DeleteFromPlaylistRequest
     {
-        public Guid PlaylistId { get; set; }
-        public Guid MusicId { get; set; }
+        public string PlaylistId { get; set; }
+        public string MusicId { get; set; }
     }
 }

@@ -102,13 +102,13 @@ namespace server.Controllers.V1
             return Ok(new AddedToPlaylistResponse() { Message = "Success" });
         }
 
-        [HttpDeleteAttribute(ApiRoutes.Playlist.DeleteFromPlaylist)]
-        public async Task<IActionResult> DeleteFromPlaylist(DeleteFromPlaylistRequest request)
+        [HttpPost(ApiRoutes.Playlist.DeleteFromPlaylist)]
+        public async Task<IActionResult> DeleteFromPlaylist([FromBody]DeleteFromPlaylistRequest request)
         {
             var record = new UserPlayList()
             {
-                PlaylistId = request.PlaylistId,
-                MusicId = request.MusicId
+                PlaylistId = Guid.Parse(request.PlaylistId),
+                MusicId = Guid.Parse(request.MusicId)
             };
             var deleted = await _playlistService.DeleteMusicFromPlaylistAsync(record);
 
