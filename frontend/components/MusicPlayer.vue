@@ -133,7 +133,6 @@ export default {
       this.pauseMusic()
       sound = null
       this.playMusic()
-      console.log(newVal)
     },
     currentSong (newVal) {
       this.playMusic(newVal)
@@ -144,10 +143,7 @@ export default {
       this.isPlaying = true
       sound = new Audio(require(`assets/${song.musicId}.mp3`))
       this.$store.commit('allplaylistmusic/setCurrentSong', song)
-      // this.currentSong = song
       sound.volume = this.volume
-      // const index = this.songs.indexOf(this.currentSong)
-      // this.$emit('currentSong-update', index)
       sound.play()
       sound.addEventListener('timeupdate', (update) => {
         this.updateTime(sound)
@@ -158,9 +154,7 @@ export default {
     },
     playMusic (newCurrent) {
       if (!sound) {
-        // this.currentSong = this.songs[0]
         this.$store.commit('allplaylistmusic/setCurrentSong', this.songs[0])
-        // console.log(this.songs[0])
         this.playSong(this.currentSong)
       } else if (newCurrent !== null) {
         this.pauseMusic()

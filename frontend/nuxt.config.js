@@ -64,10 +64,6 @@ export default {
       },
       tokenType: 'bearer'
     },
-    // redirect: {
-    //   home: '/',
-    //   callback: '/'
-    // },
     tokenTye: ''
   },
   /*

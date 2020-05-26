@@ -20,7 +20,7 @@
         <v-flex md1>
           <div class="half" />
           <div>
-            <v-btn x-small @click="getSelectedSong(index)">
+            <v-btn x-small @click="getSelectedSong(index)" :disabled="$auth.loggedIn === false">
               <v-icon left>
                 mdi-plus
               </v-icon>Add to playlist
@@ -136,13 +136,15 @@ export default {
         })
     } catch (error) {
       alert(error)
-      // console.log(error)
+      console.log(error)
     }
     this.updatePageSongs()
     try {
-      await axios.get(`https://localhost:5001/api/v1/playlist/users/${this.$auth.user.id}`).then((response) => {
-        this.$store.commit('playlist/Playlists', response.data.playlists)
-      })
+      if (this.$auth.loggedIn !== false) {
+        await axios.get(`https://localhost:5001/api/v1/playlist/users/${this.$auth.user.id}`).then((response) => {
+          this.$store.commit('playlist/Playlists', response.data.playlists)
+        })
+      }
     } catch (error) {
       alert(error)
     }

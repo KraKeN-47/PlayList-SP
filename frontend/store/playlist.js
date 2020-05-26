@@ -8,7 +8,6 @@ export const mutations = {
     state.isPlaylistDisp = !state.isPlaylistDisp
   },
   Playlists (state, newVal) {
-    console.log(newVal)
     state.myPlaylists = newVal
   }
 }

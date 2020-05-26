@@ -73,7 +73,7 @@
       <!-- Logged In navbar -->
       <div v-if="$auth.loggedIn">
         <v-label>
-          {{ this.$auth.user.email }}
+          {{ this.$auth.user.userName }}
         </v-label>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <nuxt-link class="routerLink" to="/upload">

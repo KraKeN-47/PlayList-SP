@@ -36,7 +36,6 @@
 
 <script>
 export default {
-  middleware: 'auth-isUser',
   data () {
     return {
       resetPass: '',

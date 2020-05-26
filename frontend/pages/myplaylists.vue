@@ -179,7 +179,6 @@ export default {
     try {
       await axios.get(`https://localhost:5001/api/v1/playlist/users/${this.$auth.user.id}`).then((response) => {
         this.$store.commit('playlist/Playlists', response.data.playlists)
-        console.log(response.data.playlists)
       })
     } catch (error) {
       alert(error)
@@ -218,7 +217,7 @@ export default {
       const selectedPlaylist = this.myPlaylists[index]
       try {
         await axios.get(`https://localhost:5001/api/v1/music/playlists/${selectedPlaylist.playlistId}`)
-          .then((response) => { this.allPlaylistSongs = response.data.musicList; console.log(this.allPlaylistSongs) })
+          .then((response) => { this.allPlaylistSongs = response.data.musicList })
       } catch (error) {
         alert(error)
         console.log(error)
