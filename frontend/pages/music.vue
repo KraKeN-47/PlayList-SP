@@ -66,12 +66,12 @@
         <v-btn fab depressed text x-small @click="showPlayLists = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <div class="playlists">
+        <div class="playlistsMusic">
           <v-card v-for="(list,index) in playlists" :key="list.playlistId" color="rgb(201, 190, 170)" outlined>
             <v-layout row wrap>
            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <v-flex md1>
-                <div class="halff" />
+                <div class="halfff" />
                 <div>
                   <v-btn fab x-small @click="addToPlaylist(index)">
                     <v-icon>
@@ -140,7 +140,7 @@ export default {
     }
     this.updatePageSongs()
     try {
-      await axios.get('https://localhost:5001/api/v1/playlist').then((response) => {
+      await axios.get(`https://localhost:5001/api/v1/playlist/users/${this.$auth.user.id}`).then((response) => {
         this.$store.commit('playlist/Playlists', response.data.playlists)
       })
     } catch (error) {
@@ -157,7 +157,6 @@ export default {
       } else if (this.currentPage === 0) {
         this.selectedSong = this.music[index]
       }
-      console.log(this.selectedSong)
     },
     updatePage (pageNumber) {
       this.currentPage = pageNumber
@@ -200,5 +199,11 @@ export default {
 }
 .half{
   height: 10px;
+}
+.halfff{
+  height: 35px;
+}
+.playlistsMusic{
+  width: 500px;
 }
 </style>

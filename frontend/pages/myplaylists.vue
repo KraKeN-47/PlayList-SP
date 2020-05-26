@@ -176,8 +176,9 @@ export default {
   },
   async created () {
     try {
-      await axios.get('https://localhost:5001/api/v1/playlist').then((response) => {
+      await axios.get(`https://localhost:5001/api/v1/playlist/users/${this.$auth.user.id}`).then((response) => {
         this.$store.commit('playlist/Playlists', response.data.playlists)
+        console.log(response.data.playlists)
       })
     } catch (error) {
       alert(error)

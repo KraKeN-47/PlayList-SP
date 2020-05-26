@@ -38,7 +38,7 @@ namespace server.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Playlist.Create)]
-        public async Task<IActionResult> UploadFile(CreatePlaylistRequest request)
+        public async Task<IActionResult> UploadFile([FromBody]CreatePlaylistRequest request)
         {
             var playlist = new PlayList()
             {
