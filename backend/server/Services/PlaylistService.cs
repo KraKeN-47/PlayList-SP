@@ -42,6 +42,7 @@ namespace server.Services
         public async Task<bool> DeletePlaylistAsync(Guid playlistId)
         {
             var playlist = await GetPlaylistByIdAsync(playlistId);
+            _dataContext.RemoveRange(_dataContext.UserPlayList.Where(x => x.PlaylistId == playlistId));
             _dataContext.Remove(playlist);
             var deleted = await _dataContext.SaveChangesAsync();
             return deleted > 0;
