@@ -75,7 +75,6 @@ namespace server.Controllers.V1
         [HttpPut(ApiRoutes.Music.Update)]
         public async Task<IActionResult> Update([FromRoute] Guid musicId, [FromBody] UpdateMusicRequest request)
         {
-
             var music = await _musicService.GetMusicByIdAsync(musicId);
             music.Title = request.Title;
             music.Desc = request.Desc;

@@ -12,6 +12,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Net.Http.Headers;
 using server.Contracts.V1.Responses;
 using System.Web.Http.Results;
 using System.IO;
@@ -21,7 +31,7 @@ namespace XUnitTest
 {
     public class UnitTest1
     {
-
+        private IIdentityService _service;
         [Fact]
         public async Task Registration_Test()
         {
@@ -88,7 +98,7 @@ namespace XUnitTest
             Assert.Equal(StatusCodes.Status200OK, content.StatusCode);
         }
         [Fact]
-        public async Task Upload_File_Test()
+        public async Task Upload_File_MusicController_Test()
         {
             using (var stream = File.OpenRead(@"../../../../../frontend/assets/YES.mp3"))
             {
@@ -104,7 +114,7 @@ namespace XUnitTest
                 request.Description = "test";
                 request.UserName = "test";
 
-                var mockUserStore = new Mock<IUploadService>();
+                var mockUserStore = new Mock<IMusicService>();
                 var music = new Music();
                 var id = Guid.NewGuid();
                 var path = Path.GetFullPath("../../../../../frontend/assets");
@@ -123,7 +133,7 @@ namespace XUnitTest
 
                 mockUserStore.Setup(x => x.CreateMusicAsync(music)).Returns(Task.FromResult(true));
 
-                var controller = new UploadController(mockUserStore.Object);
+                var controller = new MusicController(mockUserStore.Object);
 
                 var result = await controller.UploadFile(request);
 
@@ -136,5 +146,120 @@ namespace XUnitTest
                 Assert.Equal(StatusCodes.Status200OK, content.StatusCode);
             }
         }
+        [Fact]
+        public async Task Update_File_MusicController_Test()
+        {
+            var request = new UpdateMusicRequest();
+            request.Title = "test";
+            request.Desc = "test";
+
+            Guid id = new Guid();
+            
+            var mockUserStore = new Mock<IMusicService>();
+            var music = new Music();
+
+            var musicc = new Music() {
+                Title = request.Title,
+                Desc = request.Desc
+            };
+            mockUserStore.Setup(x => x.GetMusicByIdAsync(id)).Returns(Task.FromResult(musicc)) ;
+
+
+            mockUserStore.Setup(x => x.UpdateMusicAsync(musicc)).Returns(Task.FromResult(true));
+
+            var controller = new MusicController(mockUserStore.Object);
+
+            var result = controller.Update(id, request);
+            var content = result.Result as OkObjectResult;
+            
+            Assert.NotNull(result);
+            Assert.NotNull(content.Value);
+            Assert.Equal(StatusCodes.Status200OK, content.StatusCode);
+        }
+        [Fact]
+        public async Task Upload_File_PlaylistController_Test()
+        {
+            var request = new CreatePlaylistRequest();
+            request.Desc = "test";
+            request.IsPrivate = false;
+            request.Title = "test";
+            request.UserId = "test";
+
+            var playlist = new PlayList()
+            {
+                UserId = request.UserId,
+                Title = request.Title,
+                IsPrivate = request.IsPrivate,
+                Desc = request.Desc
+            };
+
+            var mockUserStore = new Mock<IPlaylistService>();
+            mockUserStore.Setup(x => x.CreatePlaylistAsync(playlist)).Returns(Task.FromResult(true));
+
+            var controller = new PlaylistController(mockUserStore.Object);
+            var result = controller.UploadFile(request);
+
+            var content = result.Result as OkObjectResult;
+
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal(StatusCodes.Status200OK, content.StatusCode);
+        }
+        [Fact]
+        public async Task Update_PlaylistController_Test()
+        {
+            var playlistid = new Guid();
+            var request = new UpdatePlaylistRequest()
+            {
+                Desc = "TEST",
+                IsPrivate = true,
+                Title = "test"
+            };
+            var userMockStore = new Mock<IPlaylistService>();
+            var playlist = new PlayList()
+            {
+                Desc = request.Desc,
+                IsPrivate = request.IsPrivate,
+                Title = request.Title
+            };
+            userMockStore.Setup(x => x.GetPlaylistByIdAsync(playlistid)).Returns(Task.FromResult(playlist));
+            userMockStore.Setup(x => x.UpdatePlaylistAsync(playlist)).Returns(Task.FromResult(true));
+
+            var controller = new PlaylistController(userMockStore.Object);
+            var result = controller.Update(playlistid, request);
+
+            var content = result.Result as OkObjectResult;
+
+            Assert.NotNull(result);
+            Assert.NotNull(content.Value);
+            Assert.Equal(StatusCodes.Status200OK, content.StatusCode);
+        }
+        [Fact]
+        //[Fact]
+        //public async Task RegisterAsync_Test()
+        //{
+        //    var request = new UserRegistrationRequest();
+        //    request.Email = "test1@gmail.com";
+        //    request.IsArtist = true;
+        //    request.Password = "test1";
+        //    request.UserName = "test1";
+        //    request.Password = "TEST123";
+
+        //    var newUser = new User
+        //    {
+        //        Email = request.Email
+        //    };
+
+        //    var userManager = new Mock<UserManager<User>>();
+        //    userManager.Setup(x => x.FindByEmailAsync(request.Email)).ReturnsAsync((User)null);
+
+        //    userManager.Setup(x => x.FindByNameAsync(request.UserName)).ReturnsAsync((User)null);
+
+        //    var jwt = new JwtSettings();
+        //    jwt.Secret = "a";
+        //    //var userManager = new UserManager<User>(null, null, null, null, null, null, null, null, null);
+        //    //var result = new IdentityService(userManager, jwt);
+        //  //  var l = result.RegisterAsync(request);
+        //}
     }
 }
