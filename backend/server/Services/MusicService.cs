@@ -57,5 +57,12 @@ namespace server.Services
 
             return query;
         }
+
+        public async Task<List<Music>> GetMusicByUserId(string username)
+        {
+            var query = await _dataContext.Music.Where(x => x.UserName == username).ToListAsync();
+
+            return query;
+        }
     }
 }

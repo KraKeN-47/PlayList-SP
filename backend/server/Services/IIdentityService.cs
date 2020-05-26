@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using server.Contracts.V1.Requests;
 using server.Domain;
 
@@ -8,5 +9,6 @@ namespace server.Services
     {
         Task<AuthenticationResult> RegisterAsync(UserRegistrationRequest request);
         Task<AuthenticationResult> LoginAsync(string username, string password);
+        Task<List<User>> GetAllArtists();
     }
 }
