@@ -3,8 +3,8 @@
     <!-- <v-card v-for="(song, index) in this.$store.state.allMusic.allMusic" :key="song.path" color="rgb(201, 190, 170)" outlined> -->
     <pagination-component
       :music="music"
-      :currentPage="currentPage"
-      :pageSize="pageSize"
+      :current-page="currentPage"
+      :page-size="pageSize"
       class="pagination"
       @page:update="updatePage"
     />
@@ -20,7 +20,7 @@
         <v-flex md1>
           <div class="half" />
           <div>
-            <v-btn x-small @click="addtoPlaylist(index)">
+            <v-btn x-small @click="getSelectedSong(index)">
               <v-icon left>
                 mdi-plus
               </v-icon>Add to playlist
@@ -56,8 +56,8 @@
     </v-card>
     <pagination-component
       :music="music"
-      :current-page="currentPage"
-      :page-size="pageSize"
+      :currentPage="currentPage"
+      :pageSize="pageSize"
       class="pagination"
       @page:update="updatePage"
     />
@@ -66,6 +66,39 @@
         <v-btn fab depressed text x-small @click="showPlayLists = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
+        <div class="playlists">
+          <v-card v-for="(list,index) in playlists" :key="list.playlistId" color="rgb(201, 190, 170)" outlined>
+            <v-layout row wrap>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <v-flex md1>
+                <div class="halff" />
+                <div>
+                  <v-btn fab x-small @click="addToPlaylist(index)">
+                    <v-icon>
+                      mdi-check
+                    </v-icon>
+                  </v-btn>
+                </div>
+              </v-flex>
+              <v-flex md2>
+                <div class="caption white--text">
+                  <br>
+                  Title
+                </div>
+                <div>{{ list.title }}</div>
+              </v-flex>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <v-flex md4>
+                <div class="caption white--text">
+                  <br>
+                  Description
+                </div>
+                <div>{{ list.desc }}</div>
+              </v-flex>
+            </v-layout>
+            <br>
+          </v-card>
+        </div>
       </v-overlay>
     </div>
   </div>
@@ -90,6 +123,9 @@ export default {
   computed: {
     music () {
       return this.$store.state.allMusic.allMusic
+    },
+    playlists () {
+      return this.$store.state.playlist.myPlaylists
     }
   },
   async created () { // fetch data before rendering
@@ -103,9 +139,16 @@ export default {
       // console.log(error)
     }
     this.updatePageSongs()
+    try {
+      await axios.get('https://localhost:5001/api/v1/playlist').then((response) => {
+        this.$store.commit('playlist/Playlists', response.data.playlists)
+      })
+    } catch (error) {
+      alert(error)
+    }
   },
   methods: {
-    addtoPlaylist (index) {
+    getSelectedSong (index) {
       this.showPlayLists = true
       if (this.currentPage !== 0) {
         const pageIndex = (this.pageSize * (this.currentPage + 1))
@@ -122,6 +165,21 @@ export default {
     },
     updatePageSongs () {
       this.visibleSongs = this.music.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize)
+    },
+    async addToPlaylist (index) {
+      try {
+        await axios.post('https://localhost:5001/api/v1/playlist/music', {
+          MusicId: this.selectedSong.musicId,
+          PlaylistId: this.playlists[index].playlistId
+        })
+          .then((response) => {
+            this.$store.commit('allMusic/addArray', response.data.musicList)
+          })
+      } catch (error) {
+        alert(error)
+      // console.log(error)
+      }
+      window.location.href = 'http://localhost:3000/music'
     }
   }
 }
