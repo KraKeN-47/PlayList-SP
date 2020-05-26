@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using server.Contracts.V1;
 using server.Contracts.V1.Requests;
 using server.Contracts.V1.Responses;
+using server.Domain;
 using server.Services;
 
 
@@ -83,26 +85,11 @@ namespace server.Controllers.V1
             return Ok( new { user = new UserResponse { Email = email.ToString(), UserName = userName , IsArtist = bool.Parse(isArtist.ToString()), Id = Guid.Parse(userId) } });
         }
 
-
-
-        // [HttpPost(ApiRoutes.MusicFile.Upload)]
-        // public async Task<IActionResult> UploadFile(string title, string description, [FromForm(Name = "file")]IFormFile file)
-        // {
-        //     if (file == null || !file.ContentType.Equals("audio/mp3") )
-        //     {
-        //         return BadRequest(new { message = "File has an incorrect type, please try again!" });
-        //     }
-        //
-        //     var path = Path.GetFullPath("../../frontend/assets");
-        //     var upload = Path.Combine(path);
-        //     Random r = new Random();
-        //     var id = Guid.NewGuid();
-        //     using (var fs = new FileStream(Path.Combine(path, $"{id}.mp3"), FileMode.Create))
-        //     {
-        //         await file.CopyToAsync(fs);
-        //     }
-        //
-        //     return Ok(new { file = new { fileName = file.FileName, fileType = file.ContentType , title = title , desc = description} });
-        // }
+        [HttpGet(ApiRoutes.Identity.GetAllArtists)]
+        public async Task<IActionResult> GetAllMusic()
+        {
+            List<User> allArtists = await _identityService.GetAllArtists();
+            return Ok(new { artistsList = allArtists });
+        }
     }
 }

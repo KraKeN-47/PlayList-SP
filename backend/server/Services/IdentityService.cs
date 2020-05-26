@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Expressions;
 using server.Contracts.V1.Requests;
 using server.Contracts.V1.Responses;
+using server.Data;
 using server.Domain;
 using server.Options;
 
@@ -19,7 +22,7 @@ namespace server.Services
         private readonly UserManager<User> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public IdentityService(UserManager<User> userManager, JwtSettings jwtSettings)
+        public IdentityService(UserManager<User> userManager, JwtSettings jwtSettings, DataContext dataContext)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
@@ -81,6 +84,11 @@ namespace server.Services
             }
 
             return GenerateAuthenticationResultForUser(user);
+        }
+
+        public async Task<List<User>> GetAllArtists()
+        {
+            return await _userManager.Users.Where(x => x.IsArtist == true).ToListAsync();
         }
 
         private AuthenticationResult GenerateAuthenticationResultForUser(User user)
