@@ -13,5 +13,9 @@ namespace server.Services
         Task<PlayList> GetPlaylistByIdAsync(Guid playlistId);
         Task<bool> UpdatePlaylistAsync(PlayList playlistToUpdate);
         Task<bool> DeletePlaylistAsync(Guid playlistId);
+        Task<List<PlayList>> GetPlaylistsByUserId(Guid userId);
+        Task<bool> AddMusicToPlaylist(UserPlayList record);
+        Task<bool> DeleteMusicFromPlaylistAsync(UserPlayList record);
+
     }
 }

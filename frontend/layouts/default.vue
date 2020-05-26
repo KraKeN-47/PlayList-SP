@@ -73,7 +73,7 @@
       <!-- Logged In navbar -->
       <div v-if="$auth.loggedIn">
         <v-label>
-          {{ this.$auth.user.email }}
+          {{ this.$auth.user.userName }}
         </v-label>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <nuxt-link class="routerLink" to="/upload">
@@ -108,8 +108,13 @@
     <transition name="playlistView">
       <div v-if="$auth.loggedIn && this.$store.state.playlist.isPlaylistDisp" class="playlist">
         <ul>
-          <li v-for="item in this.$store.state.allplaylistmusic.playlistArr" :key="item.key">
-            {{ item.title }}
+          <li v-for="(item, index) in this.$store.state.allplaylistmusic.playlistArr" :key="item.key">
+            <div v-if="isCurrentSong(index)" class="green--text">
+              {{ item.title }}
+            </div>
+            <div v-else @click="selectCurrentSong(index)">
+              {{ item.title }}
+            </div>
           </li>
         </ul>
       </div>
@@ -135,6 +140,9 @@ export default {
   computed: {
     songs () {
       return this.$store.state.allplaylistmusic.playlistArr
+    },
+    currentSong () {
+      return this.$store.state.allplaylistmusic.currentSong
     }
   },
   watch: {
@@ -155,6 +163,16 @@ export default {
       this.$auth.logout()
       this.$store.commit('login/LOGGED_OUT')
       this.$store.commit('allplaylistmusic/LOGGED_OUT')
+    },
+    isCurrentSong (index) {
+      const matchesIndex = this.songs.indexOf(this.currentSong)
+      if (matchesIndex === index) {
+        return true
+      }
+      return false
+    },
+    selectCurrentSong (index) {
+      this.$store.commit('allplaylistmusic/setCurrentSong', this.songs[index])
     }
   }
 }
@@ -223,8 +241,12 @@ export default {
   left: 72%;
   bottom: 8%;
   position: fixed;
-  background: black;
+  background: rgb(201, 190, 170);
   padding: 10px;
   border-radius: 10px;
+}
+li:hover {
+    cursor: pointer;
+    color: green;
 }
 </style>

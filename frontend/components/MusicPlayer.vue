@@ -99,8 +99,8 @@ export default {
       currentTime: 0,
       duration: 0,
       test: false,
-      testsongs: [],
-      currentSong: null
+      testsongs: []
+      // currentSong: null
     }
   },
   computed: {
@@ -109,6 +109,9 @@ export default {
     },
     songs () {
       return this.$store.state.allplaylistmusic.playlistArr
+    },
+    currentSong () {
+      return this.$store.state.allplaylistmusic.currentSong
     }
   },
   watch: {
@@ -127,17 +130,20 @@ export default {
       }
     },
     songs (newVal) {
-      // console.log(newVal)
+      this.pauseMusic()
+      sound = null
+      this.playMusic()
+    },
+    currentSong (newVal) {
+      this.playMusic(newVal)
     }
   },
   methods: {
     playSong (song, isPaused) {
       this.isPlaying = true
       sound = new Audio(require(`assets/${song.musicId}.mp3`))
-      this.currentSong = song
+      this.$store.commit('allplaylistmusic/setCurrentSong', song)
       sound.volume = this.volume
-      // const index = this.songs.indexOf(this.currentSong)
-      // this.$emit('currentSong-update', index)
       sound.play()
       sound.addEventListener('timeupdate', (update) => {
         this.updateTime(sound)
@@ -146,10 +152,13 @@ export default {
         }
       })
     },
-    playMusic () {
+    playMusic (newCurrent) {
       if (!sound) {
-        this.currentSong = this.songs[0]
+        this.$store.commit('allplaylistmusic/setCurrentSong', this.songs[0])
         this.playSong(this.currentSong)
+      } else if (newCurrent !== null) {
+        this.pauseMusic()
+        this.playSong(newCurrent)
       } else if (this.currentTime !== 0) {
         sound.play()
         this.isPlaying = true
@@ -164,6 +173,7 @@ export default {
       this.isPlaying = false
     },
     nextSong () {
+      this.repeat = false
       const index = this.songs.indexOf(this.currentSong)
       if (sound) {
         if (index > -1) {
@@ -178,6 +188,7 @@ export default {
       }
     },
     previousSong () {
+      this.repeat = false
       const index = this.songs.indexOf(this.currentSong)
       // console.log(index)
       if (sound) {

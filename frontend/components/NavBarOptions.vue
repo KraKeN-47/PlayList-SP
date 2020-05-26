@@ -8,19 +8,23 @@
         MY PLAYLISTS
       </v-btn>
     </nuxt-link>
-    <v-btn
-      v-if="isArtist"
-      id="b2"
-      block
-    >
-      MY SONGS
-    </v-btn>
-    <v-btn
-      id="b3"
-      block
-    >
-      ARTISTS
-    </v-btn>
+    <nuxt-link class="routerLink" to="/mysongs">
+      <v-btn
+        v-if="isArtist"
+        id="b2"
+        block
+      >
+        MY SONGS
+      </v-btn>
+    </nuxt-link>
+    <nuxt-link class="routerLink" to="/artists">
+      <v-btn
+        id="b3"
+        block
+      >
+        ARTISTS
+      </v-btn>
+    </nuxt-link>
     <v-btn
       id="b4"
       block

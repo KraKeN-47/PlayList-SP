@@ -25,6 +25,7 @@ namespace server.Contracts.V1
             public const string Login = Base + "/identity/login";
             public const string Register = Base + "/identity/register";
             public const string UserData = Base + "/identity/UserData";
+            public const string GetAllArtists = Base + "/identity/artists";
         }
 
         public static class Music
@@ -34,6 +35,8 @@ namespace server.Contracts.V1
             public const string Get = Base + "/music/{musicId}";
             public const string Update = Base + "/music/{musicId}";
             public const string Delete = Base + "/music/{musicId}";
+            public const string GetByPlaylistId = Base + "/music/playlists/{playlistId}";
+            public const string GetByUserId = Base + "/music/users";
 
         }
         public static class Playlist
@@ -43,6 +46,9 @@ namespace server.Contracts.V1
             public const string Get = Base + "/playlist/{playlistId}";
             public const string Update = Base + "/playlist/{playlistId}";
             public const string Delete = Base + "/playlist/{playlistId}";
+            public const string GetByUserId = Base + "/playlist/users/{userId}";
+            public const string AddMusicToPlaylist = Base + "/playlist/music";
+            public const string DeleteFromPlaylist = Base + "/playlist/music/delete";
         }
 
     }

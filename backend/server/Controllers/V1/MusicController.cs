@@ -97,5 +97,19 @@ namespace server.Controllers.V1
 
             return NotFound();
         }
+
+        [HttpGet(ApiRoutes.Music.GetByPlaylistId)]
+        public async Task<IActionResult> GetByPlaylistId([FromRoute] Guid playlistId)
+        {
+            List<Music> playlistMusicList = await _musicService.GetMusicByPlaylistId(playlistId);
+            return Ok(new { musicList = playlistMusicList });
+        }
+
+        [HttpGet(ApiRoutes.Music.GetByUserId)]
+        public async Task<IActionResult> Get(string username)
+        {
+            var music = await _musicService.GetMusicByUserId(username);
+            return Ok(new { musicList = music });
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace server.Controllers.V1
         public async Task<IActionResult> GetAllPlaylists()
         {
             List<PlayList> allPlaylists = await _playlistService.GetPlaylistsAsync();
-            return Ok(new { musicList = allPlaylists });
+            return Ok(new { playlists = allPlaylists });
         }
 
         [HttpGet(ApiRoutes.Playlist.Get)]
@@ -38,7 +38,7 @@ namespace server.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Playlist.Create)]
-        public async Task<IActionResult> UploadFile(CreatePlaylistRequest request)
+        public async Task<IActionResult> UploadFile([FromBody]CreatePlaylistRequest request)
         {
             var playlist = new PlayList()
             {
@@ -81,6 +81,42 @@ namespace server.Controllers.V1
             return NotFound();
         }
 
+        [HttpGet(ApiRoutes.Playlist.GetByUserId)]
+        public async Task<IActionResult> GetAllByUserId([FromRoute] Guid userId)
+        {
+            List<PlayList> allPlaylists = await _playlistService.GetPlaylistsByUserId(userId);
+            return Ok(new { playlists = allPlaylists });
+        }
+
+        [HttpPost(ApiRoutes.Playlist.AddMusicToPlaylist)]
+        public async Task<IActionResult> AddMusicToPlaylist([FromBody]AddMusicToPlaylistRequest request)
+        {
+            var record = new UserPlayList()
+            {
+                PlaylistId = request.PlaylistId,
+                MusicId = request.MusicId
+            };
+
+            await _playlistService.AddMusicToPlaylist(record);
+
+            return Ok(new AddedToPlaylistResponse() { Message = "Success" });
+        }
+
+        [HttpPost(ApiRoutes.Playlist.DeleteFromPlaylist)]
+        public async Task<IActionResult> DeleteFromPlaylist([FromBody]DeleteFromPlaylistRequest request)
+        {
+            var record = new UserPlayList()
+            {
+                PlaylistId = Guid.Parse(request.PlaylistId),
+                MusicId = Guid.Parse(request.MusicId)
+            };
+            var deleted = await _playlistService.DeleteMusicFromPlaylistAsync(record);
+
+            if (deleted)
+                return NoContent();
+
+            return NotFound();
+        }
 
     }
 }

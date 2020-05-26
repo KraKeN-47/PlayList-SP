@@ -6,17 +6,18 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <div>
-          <v-card v-for="song in this.$store.state.allplaylistmusic.playlistArr" :key="song.path" color="rgb(201, 190, 170)" outlined class="song">
+          <v-card v-for="(song, index) in allPlaylistSongs" :key="song.path" color="rgb(201, 190, 170)" outlined class="song">
             <v-layout row wrap>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <v-flex md1>
+                <div class="half" />
                 <div>
-                  <v-btn x-small fab depressed>
+                  <v-btn x-small fab depressed @click="removeFromPlaylist(index)">
                     <v-icon>mdi-minus</v-icon>
                   </v-btn>
                 </div>
               </v-flex>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <v-flex md2>
                 <div class="caption black--text">
                   Title
@@ -47,15 +48,25 @@
       </v-overlay>
     </div>
     <div class="playlists">
-      <v-card v-for="(list,index) in playlist" :key="list.playlistContent.title" color="rgb(201, 190, 170)" outlined>
+      <v-card v-for="(list,index) in playlists" :key="list.playlistId" color="rgb(201, 190, 170)" outlined>
         <v-layout row wrap>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-flex md1>
+            <div class="halff" />
+            <div>
+              <v-btn fab x-small @click="deletePlaylist(index)">
+                <v-icon>
+                  mdi-minus
+                </v-icon>
+              </v-btn>
+            </div>
+          </v-flex>
           <v-flex md2>
             <div class="caption white--text">
               <br>
               Title
             </div>
-            <div>{{ list.playlistContent.title }}</div>
+            <div>{{ list.title }}</div>
           </v-flex>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-flex md4>
@@ -63,26 +74,19 @@
               <br>
               Description
             </div>
-            <div>{{ list.playlistContent.description }}</div>
-          </v-flex>
-          <v-flex md2>
-            <div class="caption white--text">
-              <br>
-              Creator
-            </div>
-            <div> {{ list.playlistContent.user }} </div>
+            <div>{{ list.desc }}</div>
           </v-flex>
           <v-flex md1>
-            <div><br></div>
+            <div class="halff" />
             <div>
-              <v-btn x-small @click="load()">
+              <v-btn x-small @click="load(index)">
                 Load playlist
               </v-btn>
             </div>
           </v-flex>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-flex md1>
-            <div><br></div>
+            <div class="halff" />
             <div>
               <v-btn x-small @click="showPlaylistSongs(index)">
                 Show songs
@@ -101,30 +105,38 @@
         <div class="playlistForm">
           <v-form
             ref="submit"
+            v-model="valid"
             class="px-3"
             width="600px"
             height="500px"
           >
             <div class="playlistCreateForm">
               <v-text-field
+                v-model="title"
                 class="title"
                 light
                 label="Please enter your playlist name:"
                 prepend-icon="mdi-text"
                 counter
+                :rules="[requiredField('Title','')]"
                 solo
               />
               <v-text-field
+                v-model="description"
                 class="description"
                 light
                 prepend-icon="mdi-text"
                 label="Please enter your playlist description"
                 solo
+                :rules="[requiredField('Description','')]"
               />
-              <v-btn>
+              <v-label>Is your playlist private?</v-label>
+              <v-checkbox v-model="isPrivate" label="Yes" color="black" />
+              <v-btn :disabled="!valid" @click="createPlaylist()">
                 <v-icon left>
                   mdi-plus-box
-                </v-icon>Create
+                </v-icon>
+                Create
               </v-btn>
               <v-btn class="closeBtn" @click="overlay = false">
                 Close
@@ -138,37 +150,110 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  middleware: 'auth-isUser',
+  // middleware: 'auth-isUser',
   data () {
     return {
+      isPrivate: false,
       overlay: false,
-      allPlaylistSongs: this.$store.state.allMusic.allMusic,
-      playlist: [
-        {
-          playlistContent: {
-            title: 'First playlist title',
-            description: 'First playlist desc',
-            user: 'Creator 1'
-          }
-        },
-        {
-          playlistContent: {
-            title: 'Second playlist title',
-            description: 'Second playlist desc',
-            user: 'Creator 2'
-          }
-        }
-      ],
-      showSongs: false
+      allPlaylistSongs: [],
+      valid: true,
+      description: '',
+      title: '',
+      playlists: [],
+      showSongs: false,
+      selectedSong: {},
+      selectedPlaylist: {}
     }
   },
-  methods: {
-    showPlaylistSongs (index) {
-      this.showSongs === true ? this.showSongs = false : this.showSongs = true
+  computed: {
+    myPlaylists () {
+      return this.$store.state.playlist.myPlaylists
     },
-    load () {
+    playlistSongs () {
+      return this.$store.state.allplaylistmusic.playlistArr
+    }
+  },
+  async created () {
+    try {
+      await axios.get(`https://localhost:5001/api/v1/playlist/users/${this.$auth.user.id}`).then((response) => {
+        this.$store.commit('playlist/Playlists', response.data.playlists)
+      })
+    } catch (error) {
+      alert(error)
+    }
+    this.playlists = this.myPlaylists
+  },
+  methods: {
+    async removeFromPlaylist (index) {
+      this.$store.commit('musicandplaylistselection/addSelectedSong', this.$store.state.musicandplaylistselection.allPlaylistSongs[index])
+      try {
+        await axios.post('https://localhost:5001/api/v1/playlist/music/delete', {
+          MusicId: this.$store.state.musicandplaylistselection.selectedSong.musicId,
+          PlaylistId: this.$store.state.musicandplaylistselection.selectedPlaylist.playlistId
+        })
+      } catch (error) {
+        alert(error)
+        console.log(error)
+      }
+      window.location.href = 'http://localhost:3000/myplaylists'
+    },
+    async showPlaylistSongs (index) {
+      this.showSongs === true ? this.showSongs = false : this.showSongs = true
+      this.$store.commit('musicandplaylistselection/addSelectedPlaylist', this.myPlaylists[index])
+      const selectedPlaylist = this.myPlaylists[index]
+      try {
+        await axios.get(`https://localhost:5001/api/v1/music/playlists/${selectedPlaylist.playlistId}`)
+          .then((response) => { this.$store.commit('musicandplaylistselection/addPlaylistSongs', response.data.musicList); this.allPlaylistSongs = response.data.musicList })
+      } catch (error) {
+        alert(error)
+        console.log(error)
+      }
+    },
+    async load (index) {
+      const empty = []
+      this.$store.commit('allplaylistmusic/addArray', empty)
+      const selectedPlaylist = this.myPlaylists[index]
+      try {
+        await axios.get(`https://localhost:5001/api/v1/music/playlists/${selectedPlaylist.playlistId}`)
+          .then((response) => { this.allPlaylistSongs = response.data.musicList })
+      } catch (error) {
+        alert(error)
+        console.log(error)
+      }
       this.$store.commit('allplaylistmusic/addArray', this.allPlaylistSongs)
+    },
+    requiredField (property, re) { // finds out if field is not empty, else returns an error message.
+      return field =>
+        (field && field.length > 0) || `Please ${re}enter your ${property}.`
+    },
+    async createPlaylist () {
+      try {
+        await axios.post('https://localhost:5001/api/v1/playlist',
+          {
+            Desc: this.description,
+            Title: this.title,
+            IsPrivate: this.isPrivate,
+            UserId: this.$auth.user.id
+          })
+      } catch (error) {
+        console.log(error)
+      } finally {
+      // eslint-disable-next-line nuxt/no-globals-in-created
+        window.location.href = 'http://localhost:3000/myplaylists'
+      }
+    },
+    async deletePlaylist (index) {
+      try {
+        await axios.delete(`https://localhost:5001/api/v1/playlist/${this.playlists[index].playlistId}`)
+        // console.log(`${this.playlists[index].playlistId}`)
+      } catch (error) {
+        alert(error)
+        console.log(error)
+      } finally {
+        window.location.href = 'http://localhost:3000/myplaylists'
+      }
     }
   }
 }
@@ -191,7 +276,7 @@ export default {
 }
 .playlistForm{
     width:600px;
-    height: 250px;
+    height: 350px;
     border-radius: 40px;
     padding: 40px;
     margin: auto;
@@ -206,5 +291,8 @@ export default {
 }
 .closeBtn{
   float: right;
+}
+.halff{
+  height: 30px;
 }
 </style>
